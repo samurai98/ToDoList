@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
 import ToDoListTask from "./ToDoListTask";
+import PropTypes from "prop-types";
 
 class ToDoListTasks extends React.Component {
     render = () => {
+
         let tasksElements = this.props.tasks.map(t => {
-            return <ToDoListTask title={t.title} isDone={t.isDone} priority={t.priority}/>
+            return <ToDoListTask task={t} changeStatus={this.props.changeStatus}/>
         });
 
         return (
@@ -15,6 +17,12 @@ class ToDoListTasks extends React.Component {
         );
     }
 }
+
+ToDoListTasks.propTypes = {
+    changeStatus: PropTypes.func,
+    tasks: PropTypes.array
+};
+
 
 export default ToDoListTasks;
 
