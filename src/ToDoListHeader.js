@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from "prop-types";
 
 class ToDoListHeader extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     state = {
         error: false,
         title: ''
-    }
+    };
 
     onAddTaskClick = () => {
         let newTitle = this.state.title.trim();
@@ -22,18 +22,18 @@ class ToDoListHeader extends React.Component {
             });
             this.props.addTask(newTitle);
         }
-    }
+    };
     onTitleChanged = (e) => {
         this.setState({
             error: false,
             title: e.currentTarget.value
         })
-    }
+    };
     onKeyPress = (e) => {
         if (e.key === "Enter") {
             this.onAddTaskClick();
         }
-    }
+    };
 
     render = () => {
         let errorClass = this.state.error === true ? "error" : "";
