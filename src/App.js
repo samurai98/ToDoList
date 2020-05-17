@@ -18,7 +18,7 @@ class App extends React.Component {
 
     restoreState = () => {
         let state = this.state;
-        let stateAsString = localStorage.getItem("our-state-lists");
+        let stateAsString = localStorage.getItem("todolists");
         if (stateAsString) {
             state = JSON.parse(stateAsString);
         }
