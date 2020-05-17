@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-class ToDoListHeader extends React.Component {
+class AddNewItemForm extends React.Component {
     // constructor(props) {
     //     super(props);
     // }
@@ -11,7 +11,7 @@ class ToDoListHeader extends React.Component {
         title: ''
     };
 
-    onAddTaskClick = () => {
+    onAddItemClick = () => {
         let newTitle = this.state.title.trim();
         if (newTitle === "") {
             this.setState({error: true});
@@ -20,7 +20,7 @@ class ToDoListHeader extends React.Component {
                 title: "",
                 error: false
             });
-            this.props.addTask(newTitle);
+            this.props.addItem(newTitle);
         }
     };
     onTitleChanged = (e) => {
@@ -31,34 +31,31 @@ class ToDoListHeader extends React.Component {
     };
     onKeyPress = (e) => {
         if (e.key === "Enter") {
-            this.onAddTaskClick();
+            this.onAddItemClick();
         }
     };
 
     render = () => {
         let errorClass = this.state.error === true ? "error" : "";
         return (
-            <div className="todoList-header">
-                <h3 className="todoList-header__title">What to Learn</h3>
-                <div className="todoList-newTaskForm">
-                    <input
-                        type="text"
-                        placeholder="New task name"
-                        className={errorClass}
-                        onChange={this.onTitleChanged}
-                        onKeyPress={this.onKeyPress}
-                        value={this.state.title}
-                    />
-                    <button onClick={this.onAddTaskClick}>Add</button>
-                </div>
+            <div className="todoList-newTaskForm">
+                <input
+                    type="text"
+                    placeholder="New item name"
+                    className={errorClass}
+                    onChange={this.onTitleChanged}
+                    onKeyPress={this.onKeyPress}
+                    value={this.state.title}
+                />
+                <button onClick={this.onAddItemClick}>Add</button>
             </div>
         );
     }
 }
 
-ToDoListHeader.propTypes = {
+AddNewItemForm.propTypes = {
     addTask: PropTypes.func
 };
 
-export default ToDoListHeader;
+export default AddNewItemForm;
 

@@ -6,23 +6,23 @@ import PropTypes from "prop-types";
 class ToDoListTask extends React.Component {
     state = {
         isEditMode: false
-    }
+    };
 
     onIsDoneChanged = (e) => {
         this.props.changeStatus(this.props.task.id, e.currentTarget.checked)
-    }
+    };
 
     onTitleChanged = (e) => {
         this.props.changeTitle(this.props.task.id, e.currentTarget.value)
-    }
+    };
 
     activateEditMode = () => {
         this.setState({isEditMode: true});
-    }
+    };
 
     deActivateEditMode = () => {
         this.setState({isEditMode: false});
-    }
+    };
 
 
     render = () => {
