@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from "prop-types";
 
 class AddNewItemForm extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    // }
 
     state = {
         error: false,

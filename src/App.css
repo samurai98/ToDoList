@@ -23,3 +23,7 @@
 .todoList-task.done {
     opacity: .5;
 }
+
+.todoList-deleteTaskForm {
+    margin-left: 15px;
+}

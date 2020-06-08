@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import PropTypes from "prop-types";
+import DeleteItemForm from "./DeleteItemForm";
 
 
 class ToDoListTask extends React.Component {
@@ -41,6 +42,10 @@ class ToDoListTask extends React.Component {
                              value={this.props.task.title}/>
                     : <span onClick={this.activateEditMode}>{this.props.task.id} - {this.props.task.title}</span>
                 }<span>, priority: {this.props.task.priority}</span>
+                <DeleteItemForm delete={this.props.deleteTask}
+                                idTask={this.props.task.id}
+                                idList={this.props.idList}
+                />
 
             </div>
         );
