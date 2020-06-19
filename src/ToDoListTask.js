@@ -6,15 +6,16 @@ import DeleteItemForm from "./DeleteItemForm";
 
 class ToDoListTask extends React.Component {
     state = {
-        isEditMode: false
+        isEditMode: false,
+        title: this.props.task.title
     };
 
     onIsDoneChanged = (e) => {
-        this.props.changeStatus(this.props.task.id, e.currentTarget.checked)
+        this.props.changeStatus(this.props.task, e.currentTarget.checked)
     };
 
     onTitleChanged = (e) => {
-        this.props.changeTitle(this.props.task.id, e.currentTarget.value)
+        this.setState(({title: e.currentTarget.value}));
     };
 
     activateEditMode = () => {
@@ -23,24 +24,27 @@ class ToDoListTask extends React.Component {
 
     deActivateEditMode = () => {
         this.setState({isEditMode: false});
+        this.props.changeTitle(this.props.task, this.state.title);
     };
 
-
     render = () => {
-        let isOpacity = this.props.task.isDone ? 'todoList-task done' : 'todoList-task';
+        let isStatus = this.props.task.status === 2;
+        let isOpacity = isStatus ? 'todoList-task done' : 'todoList-task';
         return (
             <div className={isOpacity}>
                 <input
                     type="checkbox"
-                    checked={this.props.task.isDone}
+                    checked={isStatus}
                     onChange={this.onIsDoneChanged}
                 />
                 {this.state.isEditMode
                     ? <input onBlur={this.deActivateEditMode}
                              onChange={this.onTitleChanged}
                              autoFocus={true}
-                             value={this.props.task.title}/>
-                    : <span onClick={this.activateEditMode}>{this.props.task.id} - {this.props.task.title}</span>
+                             value={this.state.title}/>
+                    : <span onClick={this.activateEditMode}
+                            title={`id this task: ${this.props.task.id}`}
+                    >{this.props.task.title}</span>
                 }<span>, priority: {this.props.task.priority}</span>
                 <DeleteItemForm delete={this.props.deleteTask}
                                 idTask={this.props.task.id}

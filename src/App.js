@@ -3,20 +3,35 @@ import './App.css';
 import ToDoList from './ToDoList';
 import AddNewItemForm from './AddNewItemForm';
 import {connect} from "react-redux";
-import {ADD_TODOLIST, addToDoListAC} from "./reducer";
-
+import {addToDoListAC, setToDoListsAC} from "./reducer";
+import axios from 'axios';
 
 class App extends React.Component {
 
-    nextToDoListId = 0;
+    componentDidMount() {
+        this.restoreState();
+    }
+
+    restoreState = () => {
+        axios.get("https://social-network.samuraijs.com/api/1.1/todo-lists", {withCredentials: true})
+            .then(res => {
+                this.props.setToDoLists(res.data);
+            });
+    };
 
     addToDoList = (title) => {
-        let newToDoList = {
-            id: this.nextToDoListId,
-            title: title,
-            "tasks": []
-        };
-        this.props.createToDolist(newToDoList)
+
+        axios.post("https://social-network.samuraijs.com/api/1.1/todo-lists",
+            {title},
+            {
+                withCredentials: true,
+                headers: {'API-KEY': '641371ec-d5ac-4e54-91b7-f9eab8c7c8f0'}
+            })
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    this.props.addToDolist(res.data.data.item)
+                }
+            });
     };
 
     render = () => {
@@ -28,7 +43,7 @@ class App extends React.Component {
         return (
             <div>
                 <div>
-                   <AddNewItemForm addItem={this.addToDoList}/>
+                    <AddNewItemForm addItem={this.addToDoList}/>
                 </div>
                 <div className="App">
                     {todolists}
@@ -47,8 +62,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createToDolist: (newToDoList) => {
+        addToDolist: (newToDoList) => {
             dispatch(addToDoListAC(newToDoList));
+        },
+        setToDoLists: (todolists) => {
+            dispatch(setToDoListsAC(todolists))
         }
     }
 };

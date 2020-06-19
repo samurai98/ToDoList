@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 
 class ToDoListTasks extends React.Component {
     render = () => {
-
         let tasksElements = this.props.tasks.map(t => {
             return <ToDoListTask
                 key={t.id}
