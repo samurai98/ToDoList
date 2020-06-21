@@ -5,7 +5,7 @@ class DeleteItemForm extends React.Component {
     render = () => {
         return (
             <span className="todoList-deleteTaskForm">
-                <button onClick={() => {this.props.delete(this.props.idList, this.props.idTask)}}
+                <button onClick={() => {this.props.delete(this.props.taskId)}}
                 >X</button>
             </span>
         );

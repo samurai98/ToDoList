@@ -27,3 +27,7 @@
 .todoList-deleteTaskForm {
     margin-left: 15px;
 }
+
+.todoList-header__title {
+    display: inline;
+}

@@ -15,7 +15,7 @@ class ToDoListTask extends React.Component {
     };
 
     onTitleChanged = (e) => {
-        this.setState(({title: e.currentTarget.value}));
+        this.setState({title: e.currentTarget.value});
     };
 
     activateEditMode = () => {
@@ -47,8 +47,7 @@ class ToDoListTask extends React.Component {
                     >{this.props.task.title}</span>
                 }<span>, priority: {this.props.task.priority}</span>
                 <DeleteItemForm delete={this.props.deleteTask}
-                                idTask={this.props.task.id}
-                                idList={this.props.idList}
+                                taskId={this.props.task.id}
                 />
 
             </div>
