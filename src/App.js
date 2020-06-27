@@ -3,8 +3,7 @@ import './App.css';
 import ToDoList from './ToDoList';
 import AddNewItemForm from './AddNewItemForm';
 import {connect} from "react-redux";
-import {addToDoListAC, setToDoListsAC} from "./reducer";
-import {api} from "./api";
+import {addToDoList, setToDoLists} from "./reducer";
 
 class App extends React.Component {
 
@@ -13,18 +12,11 @@ class App extends React.Component {
     }
 
     restoreState = () => {
-        api.getTodolists()
-            .then(res => {
-                this.props.setToDoLists(res);
-            });
+        this.props.setToDoLists();
     };
 
     addToDoList = (title) => {
-        api.createTodolist(title)
-            .then(res => {
-                let todolist = res.data.item;
-                this.props.addToDolist(todolist)
-            });
+        this.props.addToDoList(title);
     };
 
     render = () => {
@@ -53,16 +45,16 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addToDolist: (newToDoList) => {
-            dispatch(addToDoListAC(newToDoList));
-        },
-        setToDoLists: (todolists) => {
-            dispatch(setToDoListsAC(todolists))
-        }
-    }
-};
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         addToDolist: (newToDoList) => {
+//             dispatch(addToDoListAC(newToDoList));
+//         },
+//         getTodo: () => {
+//             dispatch(setTodolists())
+//         }
+//     }
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, {setToDoLists, addToDoList})(App);
 
