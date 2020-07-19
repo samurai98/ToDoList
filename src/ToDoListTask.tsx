@@ -1,20 +1,31 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import './App.css';
-import PropTypes from "prop-types";
-import DeleteItemForm from "./DeleteItemForm";
+import DeleteItemForm from './DeleteItemForm';
+import {TaskType} from "./types/entities";
 
+type OwnPropsType = {
+    task: TaskType
+    changeStatus: (newTask: TaskType, status: boolean) => void
+    changeTitle: (newTask: TaskType, title: string) => void
+    deleteTask: (taskId: string) => void
+}
 
-class ToDoListTask extends React.Component {
+type StateType = {
+    isEditMode: boolean
+    title: string
+}
+
+class ToDoListTask extends React.Component<OwnPropsType, StateType> {
     state = {
         isEditMode: false,
         title: this.props.task.title
     };
 
-    onIsDoneChanged = (e) => {
+    onIsDoneChanged = (e:ChangeEvent<HTMLInputElement>) => {
         this.props.changeStatus(this.props.task, e.currentTarget.checked)
     };
 
-    onTitleChanged = (e) => {
+    onTitleChanged = (e:ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value});
     };
 
@@ -47,18 +58,13 @@ class ToDoListTask extends React.Component {
                     >{this.props.task.title}</span>
                 }<span>, priority: {this.props.task.priority}</span>
                 <DeleteItemForm delete={this.props.deleteTask}
-                                taskId={this.props.task.id}
+                                id={this.props.task.id}
                 />
 
             </div>
         );
     }
 }
-
-ToDoListTask.propTypes = {
-    changeStatus: PropTypes.func,
-    task: PropTypes.object
-};
 
 export default ToDoListTask;
 

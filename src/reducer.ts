@@ -1,4 +1,7 @@
 import {api} from "./api";
+import {TaskType, TodoType} from "./types/entities";
+import {AppStateType} from "./store";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
 
 export const SET_TODOLISTS_SUCCESS = 'TodoAPP/Todolist/SET-TODOLISTS-SUCCESS';
 export const SET_TODOLISTS_ERROR = 'TodoAPP/Todolist/SET-TODOLISTS-ERROR';
@@ -24,11 +27,19 @@ export const DELETE_TODOLIST_ERROR = 'TodoAPP/Todolist/DELETE-TODOLIST-ERROR';
 export const DELETE_TASK_SUCCESS = 'TodoAPP/Todolist/DELETE-TASK-SUCCESS';
 export const DELETE_TASK_ERROR = 'TodoAPP/Todolist/DELETE-TASK-ERROR';
 
-const initialState = {
-    todolists: []
+
+type InitialStateType = {
+    todolists: Array<TodoType>
+    error: boolean
+}
+
+
+const initialState: InitialStateType = {
+    todolists: [],
+    error: false
 };
 
-export const reducer = (state = initialState, action) => {
+export const reducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case SET_TODOLISTS_SUCCESS:
             return {
@@ -39,7 +50,7 @@ export const reducer = (state = initialState, action) => {
             };
         case SET_TODOLISTS_ERROR:
             return {
-                ...state, error: 'error'
+                ...state, error: true
             };
 
         case SET_TASKS_SUCCESS:
@@ -55,13 +66,13 @@ export const reducer = (state = initialState, action) => {
             };
         case SET_TASKS_ERROR:
             return {
-                ...state, error: 'error'
+                ...state, error: true
             };
 
         case ADD_TODOLIST_SUCCESS:
             return {...state, todolists: [...state.todolists, action.newToDoList]};
         case ADD_TODOLIST_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         case ADD_TASK_SUCCESS:
             return {
@@ -75,7 +86,7 @@ export const reducer = (state = initialState, action) => {
                 })
             };
         case ADD_TASK_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         case UPDATE_TODOLIST_SUCCESS:
             return {
@@ -92,7 +103,7 @@ export const reducer = (state = initialState, action) => {
                 })
             };
         case UPDATE_TODOLIST_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         case UPDATE_TASK_SUCCESS:
             return {
@@ -115,7 +126,7 @@ export const reducer = (state = initialState, action) => {
                 })
             };
         case UPDATE_TASK_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         case DELETE_TODOLIST_SUCCESS:
             return {
@@ -123,7 +134,7 @@ export const reducer = (state = initialState, action) => {
                 todolists: state.todolists.filter(todo => todo.id !== action.todolistId)
             };
         case DELETE_TODOLIST_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         case DELETE_TASK_SUCCESS:
             return {
@@ -138,172 +149,265 @@ export const reducer = (state = initialState, action) => {
                 })
             };
         case DELETE_TASK_ERROR:
-            return {...state, error: 'error'};
+            return {...state, error: true};
 
         default:
             return state;
     }
 };
 
-export const setToDoListsSuccess = (todolists) => {
+
+// ActionCreators
+
+type ActionsType =
+    SetToDoListsSuccessActionType
+    | SetToDoListsErrorActionType
+    | SetTasksSuccessActionType
+    | SetTasksErrorActionType
+    | AddToDoListSuccessActionType
+    | AddToDoListErrorActionType
+    | AddTaskSuccessActionType
+    | AddTaskErrorActionType
+    | UpdateToDoListSuccessActionType
+    | UpdateToDoListErrorActionType
+    | UpdateTaskSuccessActionType
+    | UpdateTaskErrorActionType
+    | DeleteToDoListSuccessActionType
+    | DeleteToDoListErrorActionType
+    | DeleteTaskSuccessActionType
+    | DeleteTaskErrorActionType
+
+type SetToDoListsSuccessActionType = {
+    type: typeof SET_TODOLISTS_SUCCESS
+    todolists: Array<TodoType>
+}
+type SetToDoListsErrorActionType = {
+    type: typeof SET_TODOLISTS_ERROR
+}
+
+type SetTasksSuccessActionType = {
+    type: typeof SET_TASKS_SUCCESS
+    todolistId: string
+    tasks: Array<TaskType>
+}
+type SetTasksErrorActionType = {
+    type: typeof SET_TASKS_ERROR
+}
+
+type AddToDoListSuccessActionType = {
+    type: typeof ADD_TODOLIST_SUCCESS
+    newToDoList: TodoType
+}
+type AddToDoListErrorActionType = {
+    type: typeof ADD_TODOLIST_ERROR
+}
+
+type AddTaskSuccessActionType = {
+    type: typeof ADD_TASK_SUCCESS
+    todolistId: string
+    newTask: TaskType
+}
+type AddTaskErrorActionType = {
+    type: typeof ADD_TASK_ERROR
+}
+
+type UpdateToDoListSuccessActionType = {
+    type: typeof UPDATE_TODOLIST_SUCCESS
+    todoListId: string
+    newTitle: string
+}
+type UpdateToDoListErrorActionType = {
+    type: typeof UPDATE_TODOLIST_ERROR
+}
+
+type UpdateTaskSuccessActionType = {
+    type: typeof UPDATE_TASK_SUCCESS
+    task: TaskType
+}
+type UpdateTaskErrorActionType = {
+    type: typeof UPDATE_TASK_ERROR
+}
+
+type DeleteToDoListSuccessActionType = {
+    type: typeof DELETE_TODOLIST_SUCCESS
+    todolistId: string
+}
+type DeleteToDoListErrorActionType = {
+    type: typeof DELETE_TODOLIST_ERROR
+}
+
+type DeleteTaskSuccessActionType = {
+    type: typeof DELETE_TASK_SUCCESS
+    todolistId: string
+    taskId: string
+}
+type DeleteTaskErrorActionType = {
+    type: typeof DELETE_TASK_ERROR
+}
+
+
+export const setToDoListsSuccess = (todolists: Array<TodoType>): SetToDoListsSuccessActionType => {
     return {
         type: SET_TODOLISTS_SUCCESS,
         todolists
     };
 };
-export const setToDoListsError = () => {
+export const setToDoListsError = (): SetToDoListsErrorActionType => {
     return {type: SET_TODOLISTS_ERROR};
 };
 
-export const setTasksSuccess = (todolistId, tasks) => {
+export const setTasksSuccess = (todolistId: string, tasks: Array<TaskType>): SetTasksSuccessActionType => {
     return {
         type: SET_TASKS_SUCCESS,
         todolistId,
         tasks
     };
 };
-export const setTasksError = () => {
+export const setTasksError = (): SetTasksErrorActionType => {
     return {type: SET_TASKS_ERROR};
 };
 
-export const addToDoListSuccess = (newToDoList) => {
+export const addToDoListSuccess = (newToDoList: TodoType): AddToDoListSuccessActionType => {
     return {
         type: ADD_TODOLIST_SUCCESS,
         newToDoList
     }
 };
-export const addToDoListError = () => {
+export const addToDoListError = (): AddToDoListErrorActionType => {
     return {type: ADD_TODOLIST_ERROR};
 };
 
-export const addTaskSuccess = (todolistId, newTask) => {
+export const addTaskSuccess = (todolistId: string, newTask: TaskType): AddTaskSuccessActionType => {
     return {
         type: ADD_TASK_SUCCESS,
         todolistId,
         newTask
     };
 };
-export const addTaskError = () => {
+export const addTaskError = (): AddTaskErrorActionType => {
     return {type: ADD_TASK_ERROR};
 };
 
-export const updateToDoListSuccess = (todoListId, newTitle) => {
+export const updateToDoListSuccess = (todoListId: string, newTitle: string): UpdateToDoListSuccessActionType => {
     return {type: UPDATE_TODOLIST_SUCCESS, todoListId, newTitle};
 };
-export const updateToDoListError = () => {
+export const updateToDoListError = (): UpdateToDoListErrorActionType => {
     return {type: UPDATE_TODOLIST_ERROR};
 };
 
-export const updateTaskSuccess = (task) => {
+export const updateTaskSuccess = (task: TaskType): UpdateTaskSuccessActionType => {
     return {type: UPDATE_TASK_SUCCESS, task};
 };
-export const updateTaskError = () => {
+export const updateTaskError = (): UpdateTaskErrorActionType => {
     return {type: UPDATE_TASK_ERROR};
 };
 
-export const deleteToDoListSuccess = (todolistId) => {
+export const deleteToDoListSuccess = (todolistId: string): DeleteToDoListSuccessActionType => {
     return {
         type: DELETE_TODOLIST_SUCCESS,
         todolistId
     };
 };
-export const deleteToDoListError = () => {
+export const deleteToDoListError = (): DeleteToDoListErrorActionType => {
     return {type: DELETE_TODOLIST_ERROR};
 };
 
-export const deleteTaskSuccess = (todolistId, taskId) => {
+export const deleteTaskSuccess = (todolistId: string, taskId: string): DeleteTaskSuccessActionType => {
     return {
         type: DELETE_TASK_SUCCESS,
         todolistId,
         taskId
     };
 };
-export const deleteTaskError = () => {
+export const deleteTaskError = (): DeleteTaskErrorActionType => {
     return {type: DELETE_TASK_ERROR};
 };
 
 // Thunk
 
-export const setToDoLists = () => (dispatch, getState) => {
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsType>;
+type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionsType>;
+
+export const setToDoLists = (): ThunkType => (dispatch: ThunkDispatchType) => {
     api.getTodolists()
         .then(res => {
             dispatch(setToDoListsSuccess(res))
         })
-        .catch((error) => {
-            dispatch(setToDoListsError(error))
+        .catch(() => {
+            dispatch(setToDoListsError())
         })
 };
 
-export const setTasks = (idList) => (dispatch) => {
+export const setTasks = (idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.getTasks(idList)
         .then(res => {
             dispatch(setTasksSuccess(idList, res.items))
         })
-        .catch((error) => {
-            dispatch(setTasksError(error))
+        .catch(() => {
+            dispatch(setTasksError())
         })
 };
 
-export const addToDoList = (title) => (dispatch) => {
+export const addToDoList = (title: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.createTodolist(title)
         .then(res => {
             let todolist = res.data.item;
             dispatch(addToDoListSuccess(todolist));
         })
-        .catch((error) => {
-            dispatch(addToDoListError(error))
+        .catch(() => {
+            dispatch(addToDoListError())
         })
 };
 
-export const addTask = (newText, idList) => (dispatch) => {
+export const addTask = (newText: string, idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.createTask(newText, idList)
         .then(res => {
             dispatch(addTaskSuccess(idList, res.data.item))
         })
-        .catch((error) => {
-            dispatch(addTaskError(error))
+        .catch(() => {
+            dispatch(addTaskError())
         })
 };
 
-export const updateToDoList = (idList, newListTitle) => (dispatch) => {
+export const updateToDoList = (idList: string, newListTitle: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.updateTodolist(idList, newListTitle)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(updateToDoListSuccess(idList, newListTitle));
             }
         })
-        .catch((error) => {
-            dispatch(updateToDoListError(error))
+        .catch(() => {
+            dispatch(updateToDoListError())
         })
 };
 
-export const updateTask = (newTask) => (dispatch) => {
+export const updateTask = (newTask: TaskType): ThunkType => (dispatch: ThunkDispatchType) => {
     api.updateTask(newTask)
         .then(res => {
             dispatch(updateTaskSuccess(res.data.item))
         })
-        .catch((error) => {
-            dispatch(updateTaskError(error))
+        .catch(() => {
+            dispatch(updateTaskError())
         })
 };
 
-export const deleteToDoList = (idList) => (dispatch, getState) => {
+export const deleteToDoList = (idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.deleteTodolist(idList)
-        .then(res => {
+        .then(() => {
             dispatch(deleteToDoListSuccess(idList))
         })
-        .catch((error) => {
-            dispatch(deleteToDoListError(error))
+        .catch(() => {
+            dispatch(deleteToDoListError())
         })
 };
 
-export const deleteTask = (idList, taskId) => (dispatch, getState) => {
+export const deleteTask = (idList: string, taskId: string): ThunkType => (dispatch: ThunkDispatchType) => {
     api.deleteTask(idList, taskId)
-        .then(res => {
+        .then(() => {
             dispatch(deleteTaskSuccess(idList, taskId));
         })
-        .catch((error) => {
-            dispatch(deleteTaskError(error))
+        .catch(() => {
+            dispatch(deleteTaskError())
         })
 };
 

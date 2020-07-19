@@ -1,16 +1,24 @@
-import React from 'react';
-import PropTypes from "prop-types";
+import React, { ChangeEvent,KeyboardEvent } from 'react';
 
-class AddNewItemForm extends React.Component {
+type OwnPropsType = {
+    addItem: (newTitle: string)=>void
+}
 
-    state = {
+type StateType = {
+    error: boolean
+    title: string
+}
+
+class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
+
+    state: StateType = {
         error: false,
         title: ''
     };
 
     onAddItemClick = () => {
         let newTitle = this.state.title.trim();
-        if (newTitle === "") {
+        if (newTitle === '') {
             this.setState({error: true});
         } else {
             this.setState({
@@ -20,20 +28,20 @@ class AddNewItemForm extends React.Component {
             this.props.addItem(newTitle);
         }
     };
-    onTitleChanged = (e) => {
+    onTitleChanged = (e:ChangeEvent<HTMLInputElement>) => {
         this.setState({
             error: false,
             title: e.currentTarget.value
         })
     };
-    onKeyPress = (e) => {
+    onKeyPress = (e:KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             this.onAddItemClick();
         }
     };
 
     render = () => {
-        let errorClass = this.state.error === true ? "error" : "";
+        let errorClass = this.state.error ? "error" : "";
         return (
             <div className="todoList-newTaskForm">
                 <input
@@ -50,9 +58,6 @@ class AddNewItemForm extends React.Component {
     }
 }
 
-AddNewItemForm.propTypes = {
-    addTask: PropTypes.func
-};
 
 export default AddNewItemForm;
 

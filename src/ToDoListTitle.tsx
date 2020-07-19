@@ -1,14 +1,25 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import DeleteItemForm from "./DeleteItemForm";
 
+type OwnPropsType = {
+    title: string
+    idList: string
+    delete: () => void
+    updateTodolist: (newListTitle: string) => void
+}
 
-class ToDoListHeader extends React.Component {
+type StateType = {
+    isEditMode: boolean
+    title: string
+}
+
+class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
     state = {
         isEditMode: false,
         title: this.props.title
     };
 
-    onTitleChanged = (e) => {
+    onTitleChanged = (e:ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value});
     };
 
@@ -34,7 +45,8 @@ class ToDoListHeader extends React.Component {
                       onClick={this.activateEditMode}
                       title={`id this list: ${this.props.idList}`}
                 >{this.props.title}</h3>
-            } <DeleteItemForm idList={this.props.idList} delete={this.props.delete}/>
+            } <DeleteItemForm id={this.props.idList}
+                              delete={this.props.delete}/>
         </div>);
     }
 }

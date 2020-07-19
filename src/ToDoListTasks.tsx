@@ -1,9 +1,16 @@
 import React from 'react';
 import './App.css';
-import ToDoListTask from "./ToDoListTask";
-import PropTypes from "prop-types";
+import ToDoListTask from './ToDoListTask';
+import {TaskType} from './types/entities';
 
-class ToDoListTasks extends React.Component {
+type OwnPropsType = {
+    tasks: Array<TaskType>
+    changeStatus: (newTask: TaskType, status: boolean) => void
+    changeTitle: (newTask: TaskType, title: string) => void
+    deleteTask: (taskId: string) => void
+}
+
+class ToDoListTasks extends React.Component<OwnPropsType> {
     render = () => {
         let tasksElements = this.props.tasks.map(t => {
             return <ToDoListTask
@@ -16,17 +23,12 @@ class ToDoListTasks extends React.Component {
         });
 
         return (
-            <div className="todoList-tasks">
+            <div className='todoList-tasks'>
                 {tasksElements}
             </div>
         );
     }
 }
-
-ToDoListTasks.propTypes = {
-    changeStatus: PropTypes.func,
-    tasks: PropTypes.array
-};
 
 
 export default ToDoListTasks;

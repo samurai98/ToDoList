@@ -1,16 +1,39 @@
 import React from 'react';
 import './App.css';
-import ToDoListTasks from "./ToDoListTasks";
-import ToDoListFooter from "./ToDoListFooter";
-import AddNewItemForm from "./AddNewItemForm";
-import ToDoListTitle from "./ToDoListTitle";
-import {connect} from "react-redux";
+import ToDoListTasks from './ToDoListTasks';
+import ToDoListFooter from './ToDoListFooter';
+import AddNewItemForm from './AddNewItemForm';
+import ToDoListTitle from './ToDoListTitle';
+import {connect} from 'react-redux';
 import {
     addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList,
-} from "./reducer";
+} from './reducer';
+import {TaskType, TodoType} from './types/entities';
+import {AppStateType} from "./store";
 
+type StateType = {
+    state: Array<TodoType>
+    filterValue: string
+}
 
-class ToDoList extends React.Component {
+type OwnPropsType = {
+    idList: string
+    title: string
+    tasks: Array<TaskType>
+}
+
+type MapDispatchPropsType = {
+    setTasks: (idList: string) => void
+    addTask: (newText: string, idList: string) => void
+    updateToDoList: (idList: string, newListTitle: string) => void
+    updateTask: (newTask: TaskType) => void
+    deleteToDoList: (idList: string) => void
+    deleteTask: (idList: string, taskId: string) => void
+}
+
+type PropsType = OwnPropsType & MapDispatchPropsType
+
+class ToDoList extends React.Component<PropsType, StateType> {
 
     componentDidMount() {
         this.restoreState();
@@ -25,7 +48,7 @@ class ToDoList extends React.Component {
         filterValue: "All"
     };
 
-    addTask = (newText) => {
+    addTask = (newText: string) => {
         this.props.addTask(newText, this.props.idList)
     };
 
@@ -33,29 +56,29 @@ class ToDoList extends React.Component {
         this.props.deleteToDoList(this.props.idList);
     };
 
-    deleteTask = (taskId) => {
+    deleteTask = (taskId: string) => {
         this.props.deleteTask(this.props.idList, taskId)
     };
 
-    changeFilter = (newFilterValue) => {
+    changeFilter = (newFilterValue: string) => {
         this.setState({
             filterValue: newFilterValue
         });
     };
 
-    changeStatus = (newTask, status) => {
-        this.changeTask({...newTask, status: status === true ? 2 : 0});
+    changeStatus = (newTask: TaskType, status: boolean) => {
+        this.changeTask({...newTask, status: status ? 2 : 0});
     };
 
-    changeTitle = (newTask, title) => {
+    changeTitle = (newTask: TaskType, title: string) => {
         this.changeTask({...newTask, title: title})
     };
 
-    changeTask = (newTask) => {
+    changeTask = (newTask: TaskType) => {
         this.props.updateTask(newTask)
     };
 
-    updateTodolist = (newListTitle) => {
+    updateTodolist = (newListTitle: string) => {
         this.props.updateToDoList(this.props.idList, newListTitle)
     };
 
@@ -100,7 +123,7 @@ class ToDoList extends React.Component {
     }
 }
 
-export default connect(null, {
+export default connect<{}, MapDispatchPropsType, OwnPropsType, AppStateType>(null, {
     setTasks, addTask, updateToDoList,
     updateTask, deleteToDoList, deleteTask
 })(ToDoList);
