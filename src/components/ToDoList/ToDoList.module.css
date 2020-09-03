@@ -1,0 +1,8 @@
+.todoList {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.todoList > div {
+    padding: 10px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import '../App.css';
+import '../../App.css';
+import styles from './ToDoListFooter.module.css';
 
 type StateType = {
     isHidden: boolean
@@ -32,12 +33,12 @@ class ToDoListFooter extends React.Component<OwnPropsType, StateType> {
     };
 
     render = () => {
-        let classForAll = this.props.filterValue === "All" ? "filter-active" : "";
-        let classForCompleted = this.props.filterValue === "Completed" ? "filter-active" : "";
-        let classForActive = this.props.filterValue === "Active" ? "filter-active" : "";
+        let classForAll = this.props.filterValue === 'All' ? styles['filter-active'] : '';
+        let classForCompleted = this.props.filterValue === 'Completed' ? styles['filter-active'] : '';
+        let classForActive = this.props.filterValue === 'Active' ? styles['filter-active'] : '';
 
         return (
-            <div className="todoList-footer">
+            <div className={styles['todoList-footer']}>
                 {!this.state.isHidden && <div>
                     <button
                         className={classForAll}

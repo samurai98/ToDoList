@@ -1,7 +1,8 @@
 import React, {ChangeEvent} from 'react';
-import '../App.css';
-import DeleteItemForm from './common/DeleteItemForm';
-import {TaskType} from "../types/entities";
+import '../../App.css';
+import DeleteItemForm from '../common/DeleteItemForm/DeleteItemForm';
+import {TaskType} from '../../types/entities';
+import styles from './ToDoListTask.module.css';
 
 type OwnPropsType = {
     task: TaskType
@@ -40,11 +41,11 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
 
     render = () => {
         let isStatus = this.props.task.status === 2;
-        let isOpacity = isStatus ? 'todoList-task done' : 'todoList-task';
+        let isOpacity = isStatus ? `${styles['todoList-task']} ${styles.done}` : styles['todoList-task'];
         return (
             <div className={isOpacity}>
                 <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={isStatus}
                     onChange={this.onIsDoneChanged}
                 />

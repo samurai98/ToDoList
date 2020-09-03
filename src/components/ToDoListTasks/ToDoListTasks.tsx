@@ -1,7 +1,8 @@
 import React from 'react';
-import '../App.css';
-import ToDoListTask from './ToDoListTask';
-import {TaskType} from '../types/entities';
+import '../../App.css';
+import ToDoListTask from '../ToDoListTask/ToDoListTask';
+import {TaskType} from '../../types/entities';
+import styles from './ToDoListTasks.module.css'
 
 type OwnPropsType = {
     tasks: Array<TaskType>
@@ -23,7 +24,7 @@ class ToDoListTasks extends React.Component<OwnPropsType> {
         });
 
         return (
-            <div className='todoList-tasks'>
+            <div className={styles['todoList-tasks']}>
                 {tasksElements}
             </div>
         );

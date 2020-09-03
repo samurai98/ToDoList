@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from 'react';
-import DeleteItemForm from "./common/DeleteItemForm";
+import DeleteItemForm from '../common/DeleteItemForm/DeleteItemForm';
+import styles from './ToDoListTitle.module.css';
 
 type OwnPropsType = {
     title: string
@@ -36,12 +37,12 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
     render = () => {
         return (<div>
             {this.state.isEditMode
-                ? <input className='todoList-header__title'
+                ? <input className={styles['todoList-header__title']}
                          onBlur={this.deActivateEditMode}
                          onChange={this.onTitleChanged}
                          autoFocus={true}
                          value={this.state.title}/>
-                : <h3 className='todoList-header__title'
+                : <h3 className={styles['todoList-header__title']}
                       onClick={this.activateEditMode}
                       title={`id this list: ${this.props.idList}`}
                 >{this.props.title}</h3>

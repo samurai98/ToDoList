@@ -2,32 +2,3 @@
     display: flex;
     flex-direction: row;
 }
-
-.todoList {
-    width: 300px;
-    margin: 0 auto;
-}
-
-.todoList > div {
-    padding: 10px;
-}
-
-.filter-active {
-    background-color: blueviolet;
-}
-
-.error {
-    border-color: red;
-}
-
-.todoList-task.done {
-    opacity: .5;
-}
-
-.todoList-deleteTaskForm {
-    margin-left: 15px;
-}
-
-.todoList-header__title {
-    display: inline;
-}

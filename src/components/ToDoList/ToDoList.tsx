@@ -1,15 +1,16 @@
 import React from 'react';
-import '../App.css';
-import ToDoListTasks from './ToDoListTasks';
-import ToDoListFooter from './ToDoListFooter';
-import AddNewItemForm from './common/AddNewItemForm';
-import ToDoListTitle from './ToDoListTitle';
+import '../../App.css';
+import ToDoListTasks from '../ToDoListTasks/ToDoListTasks';
+import ToDoListFooter from '../ToDoListFooter/ToDoListFooter';
+import AddNewItemForm from '../common/AddNewItemForm/AddNewItemForm';
+import ToDoListTitle from '../ToDoListTitle/ToDoListTitle';
 import {connect} from 'react-redux';
 import {
     addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList,
-} from '../redux/reducer';
-import {TaskType, TodoType} from '../types/entities';
-import {AppStateType} from "../redux/store";
+} from '../../redux/reducer';
+import {TaskType, TodoType} from '../../types/entities';
+import {AppStateType} from '../../redux/store';
+import styles from './ToDoList.module.css';
 
 type StateType = {
     state: Array<TodoType>
@@ -45,7 +46,7 @@ class ToDoList extends React.Component<PropsType, StateType> {
 
     state = {
         state: [],
-        filterValue: "All"
+        filterValue: 'All'
     };
 
     addTask = (newText: string) => {
@@ -87,9 +88,9 @@ class ToDoList extends React.Component<PropsType, StateType> {
 
         let filtredTasks = tasks.filter(t => {
             switch (this.state.filterValue) {
-                case "Completed":
+                case 'Completed':
                     return t.status === 2;
-                case "Active":
+                case 'Active':
                     return t.status === 0;
                 default:
                     return true;
@@ -97,9 +98,9 @@ class ToDoList extends React.Component<PropsType, StateType> {
         });
 
         return (
-            <div className="App">
-                <div className="todoList">
-                    <div className="todoList-header">
+            <div>
+                <div className={styles.todoList}>
+                    <div>
                         <ToDoListTitle title={this.props.title}
                                        idList={this.props.idList}
                                        delete={this.deleteToDoList}

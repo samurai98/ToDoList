@@ -1,4 +1,5 @@
 import React, { ChangeEvent,KeyboardEvent } from 'react';
+import styles from './AddNewItemForm.module.css';
 
 type OwnPropsType = {
     addItem: (newTitle: string)=>void
@@ -22,7 +23,7 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
             this.setState({error: true});
         } else {
             this.setState({
-                title: "",
+                title: '',
                 error: false
             });
             this.props.addItem(newTitle);
@@ -41,12 +42,12 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
     };
 
     render = () => {
-        let errorClass = this.state.error ? "error" : "";
+        let errorClass = this.state.error ? `${styles.error}` : '';
         return (
-            <div className="todoList-newTaskForm">
+            <div className='todoList-newTaskForm'>
                 <input
-                    type="text"
-                    placeholder="New item name"
+                    type='text'
+                    placeholder='New item name'
                     className={errorClass}
                     onChange={this.onTitleChanged}
                     onKeyPress={this.onKeyPress}
