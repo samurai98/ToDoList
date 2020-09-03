@@ -1,5 +1,5 @@
-import {api} from "./api";
-import {TaskType, TodoType} from "./types/entities";
+import {api} from "../api/api";
+import {TaskType, TodoType} from "../types/entities";
 import {AppStateType} from "./store";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 

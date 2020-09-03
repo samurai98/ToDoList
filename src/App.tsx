@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import ToDoList from './ToDoList';
-import AddNewItemForm from './AddNewItemForm';
+import ToDoList from './components/ToDoList';
+import AddNewItemForm from './components/common/AddNewItemForm';
 import {connect} from "react-redux";
-import {addToDoList, setToDoLists} from "./reducer";
+import {addToDoList, setToDoLists} from "./redux/reducer";
 import {TodoType} from "./types/entities";
-import {AppStateType} from "./store";
+import {AppStateType} from "./redux/store";
 
 type MapStatePropsType = {
     todolists: Array<TodoType>

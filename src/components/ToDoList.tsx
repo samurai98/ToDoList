@@ -1,15 +1,15 @@
 import React from 'react';
-import './App.css';
+import '../App.css';
 import ToDoListTasks from './ToDoListTasks';
 import ToDoListFooter from './ToDoListFooter';
-import AddNewItemForm from './AddNewItemForm';
+import AddNewItemForm from './common/AddNewItemForm';
 import ToDoListTitle from './ToDoListTitle';
 import {connect} from 'react-redux';
 import {
     addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList,
-} from './reducer';
-import {TaskType, TodoType} from './types/entities';
-import {AppStateType} from "./store";
+} from '../redux/reducer';
+import {TaskType, TodoType} from '../types/entities';
+import {AppStateType} from "../redux/store";
 
 type StateType = {
     state: Array<TodoType>

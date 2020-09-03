@@ -35,7 +35,7 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
         })
     };
     onKeyPress = (e:KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             this.onAddItemClick();
         }
     };

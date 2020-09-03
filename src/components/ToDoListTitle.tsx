@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import DeleteItemForm from "./DeleteItemForm";
+import DeleteItemForm from "./common/DeleteItemForm";
 
 type OwnPropsType = {
     title: string

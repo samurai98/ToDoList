@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
+import '../App.css';
 import ToDoListTask from './ToDoListTask';
-import {TaskType} from './types/entities';
+import {TaskType} from '../types/entities';
 
 type OwnPropsType = {
     tasks: Array<TaskType>
