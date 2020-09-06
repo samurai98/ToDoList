@@ -98,22 +98,20 @@ class ToDoList extends React.Component<PropsType, StateType> {
         });
 
         return (
-            <div>
-                <div className={styles.todoList}>
-                    <div>
-                        <ToDoListTitle title={this.props.title}
-                                       idList={this.props.idList}
-                                       delete={this.deleteToDoList}
-                                       updateTodolist={this.updateTodolist}
-                        />
-                        <AddNewItemForm addItem={this.addTask}/>
-                    </div>
+            <div className={styles.todoList}>
+                <div className={styles.content}>
+                    <ToDoListTitle title={this.props.title}
+                                   idList={this.props.idList}
+                                   delete={this.deleteToDoList}
+                                   updateTodolist={this.updateTodolist}
+                    />
                     <ToDoListTasks
                         tasks={filtredTasks}
                         changeStatus={this.changeStatus}
                         changeTitle={this.changeTitle}
                         deleteTask={this.deleteTask}
                     />
+                    <AddNewItemForm addItem={this.addTask}/>
                     <ToDoListFooter
                         filterValue={this.state.filterValue}
                         changeFilter={this.changeFilter}

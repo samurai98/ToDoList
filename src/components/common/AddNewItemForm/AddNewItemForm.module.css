@@ -1,3 +1,43 @@
+.todoList-newTaskForm {
+    max-height: 70px;
+    background-color: #ebecf0;
+    border-radius: 5px;
+    padding: 4px;
+}
+
+.todoList-newTaskForm input {
+    border: none;
+    outline: none;
+    display: block;
+    width: 200px;
+    height: 16px;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.todoList-newTaskForm input:focus {
+    box-shadow: inset 0 0 0 2px #0079bf;
+}
+
+.todoList-newTaskForm button {
+    background-color: #5aac44;
+    border: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+    width: 111px;
+    height: 26px;
+    margin: 5px;
+    padding: 4px 12px;
+    border-radius: 5px;
+}
+
+.todoList-newTaskForm button:hover {
+    background-color: #6ecb50;
+}
+
+
 .error {
-    border-color: red;
+    background-color: rgba(187, 92, 81, 0.75);
+    color: white;
 }

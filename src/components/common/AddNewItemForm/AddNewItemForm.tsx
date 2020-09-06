@@ -44,7 +44,7 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
     render = () => {
         let errorClass = this.state.error ? `${styles.error}` : '';
         return (
-            <div className='todoList-newTaskForm'>
+            <div className={styles['todoList-newTaskForm']}>
                 <input
                     type='text'
                     placeholder='New item name'

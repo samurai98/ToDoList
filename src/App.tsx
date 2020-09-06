@@ -39,13 +39,11 @@ class App extends React.Component<PropsType> {
             .map(tl => <ToDoList key={tl.id} idList={tl.id} title={tl.title} tasks={tl.tasks}/>);
 
         return (
-            <div>
-                <div>
-                    <AddNewItemForm addItem={this.addToDoList}/>
-                </div>
-                <div className="App">
+            <div className='App'>
+                <div className='todolists'>
                     {todolists}
                 </div>
+                <AddNewItemForm addItem={this.addToDoList}/>
             </div>
 
         );

@@ -35,7 +35,7 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
 
 
     render = () => {
-        return (<div>
+        return <div className={styles['todoList-header']}>
             {this.state.isEditMode
                 ? <input className={styles['todoList-header__title']}
                          onBlur={this.deActivateEditMode}
@@ -48,7 +48,7 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
                 >{this.props.title}</h3>
             } <DeleteItemForm id={this.props.idList}
                               delete={this.props.delete}/>
-        </div>);
+        </div>;
     }
 }
 

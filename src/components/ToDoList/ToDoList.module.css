@@ -1,8 +1,11 @@
 .todoList {
-    width: 300px;
-    margin: 0 auto;
+    width: 272px;
+    max-width: 272px;
+    margin: 0 4px;
 }
 
-.todoList > div {
-    padding: 10px;
+.content {
+    background-color: #ebecf0;
+    border-radius: 5px;
 }
+
