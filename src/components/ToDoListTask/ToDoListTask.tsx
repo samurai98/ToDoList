@@ -22,11 +22,11 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
         title: this.props.task.title
     };
 
-    onIsDoneChanged = (e:ChangeEvent<HTMLInputElement>) => {
+    onIsDoneChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.props.changeStatus(this.props.task, e.currentTarget.checked)
     };
 
-    onTitleChanged = (e:ChangeEvent<HTMLInputElement>) => {
+    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value});
     };
 
@@ -44,24 +44,26 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
         let isOpacity = isStatus ? `${styles['todoList-task']} ${styles.done}` : styles['todoList-task'];
         return (
             <div className={isOpacity}>
-                <input
-                    type='checkbox'
-                    checked={isStatus}
-                    onChange={this.onIsDoneChanged}
-                />
-                {this.state.isEditMode
-                    ? <input onBlur={this.deActivateEditMode}
-                             onChange={this.onTitleChanged}
-                             autoFocus={true}
-                             value={this.state.title}/>
-                    : <span onClick={this.activateEditMode}
-                            title={`id this task: ${this.props.task.id}`}
-                    >{this.props.task.title}</span>
-                }<span>, priority: {this.props.task.priority}</span>
-                <DeleteItemForm delete={this.props.deleteTask}
-                                id={this.props.task.id}
-                />
-
+                <div>
+                    <input
+                        type='checkbox'
+                        checked={isStatus}
+                        onChange={this.onIsDoneChanged}
+                    />
+                    {this.state.isEditMode
+                        ? <input onBlur={this.deActivateEditMode}
+                                 onChange={this.onTitleChanged}
+                                 autoFocus={true}
+                                 value={this.state.title}/>
+                        : <span onClick={this.activateEditMode}
+                                title={`id this task: ${this.props.task.id}`}
+                        >{this.props.task.title}</span>
+                    }<span>, priority: {this.props.task.priority}</span></div>
+                <div>
+                    <DeleteItemForm delete={this.props.deleteTask}
+                                    id={this.props.task.id}
+                    />
+                </div>
             </div>
         );
     }

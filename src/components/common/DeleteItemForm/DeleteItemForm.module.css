@@ -1,3 +1,14 @@
-.todoList-deleteTaskForm {
-    margin-left: 15px;
+.todoList-deleteTaskForm button {
+    cursor: pointer;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    background: none;
+    margin-right: 5px;
+}
+
+.todoList-deleteTaskForm button:hover {
+    color: blue;
+    font-weight: bold;
+    background-color: rgba(255, 214, 204, 0.73);
 }

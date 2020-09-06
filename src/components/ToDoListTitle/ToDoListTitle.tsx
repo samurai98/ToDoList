@@ -20,7 +20,7 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
         title: this.props.title
     };
 
-    onTitleChanged = (e:ChangeEvent<HTMLInputElement>) => {
+    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value});
     };
 
@@ -36,18 +36,24 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
 
     render = () => {
         return <div className={styles['todoList-header']}>
-            {this.state.isEditMode
-                ? <input className={styles['todoList-header__title']}
-                         onBlur={this.deActivateEditMode}
-                         onChange={this.onTitleChanged}
-                         autoFocus={true}
-                         value={this.state.title}/>
-                : <h3 className={styles['todoList-header__title']}
-                      onClick={this.activateEditMode}
-                      title={`id this list: ${this.props.idList}`}
-                >{this.props.title}</h3>
-            } <DeleteItemForm id={this.props.idList}
-                              delete={this.props.delete}/>
+            <div>
+                {this.state.isEditMode
+                    ? <input className={styles['todoList-header__title']}
+                             onBlur={this.deActivateEditMode}
+                             onChange={this.onTitleChanged}
+                             autoFocus={true}
+                             value={this.state.title}/>
+                    : <h3 className={styles['todoList-header__title']}
+                          onClick={this.activateEditMode}
+                          title={`id this list: ${this.props.idList}`}
+                    >{this.props.title}</h3>
+                }
+            </div>
+            <div>
+                <DeleteItemForm id={this.props.idList}
+                                delete={this.props.delete}/>
+            </div>
+
         </div>;
     }
 }
