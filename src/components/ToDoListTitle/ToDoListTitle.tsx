@@ -36,10 +36,9 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
 
     render = () => {
         return <div className={styles['todoList-header']}>
-            <div>
+            <div className={styles['todoList-header__title']}>
                 {this.state.isEditMode
-                    ? <input className={styles['todoList-header__title']}
-                             onBlur={this.deActivateEditMode}
+                    ? <input onBlur={this.deActivateEditMode}
                              onChange={this.onTitleChanged}
                              autoFocus={true}
                              value={this.state.title}/>

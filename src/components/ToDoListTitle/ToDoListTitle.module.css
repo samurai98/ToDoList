@@ -7,6 +7,9 @@
 
 .todoList-header__title {
     display: inline;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .todoList-header input {

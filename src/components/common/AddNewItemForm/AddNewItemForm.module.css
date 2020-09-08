@@ -13,6 +13,7 @@
     height: 16px;
     padding: 8px 12px;
     border-radius: 5px;
+    box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
 }
 
 .todoList-newTaskForm input:focus {

@@ -53,6 +53,53 @@
     background-color: #6ecb50;
 }
 
+.taskInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.taskInfo > div {
+    display: flex;
+    align-items: center;
+}
+
+.taskTitle {
+    word-break: break-all;
+    margin: 4px 3px 9px 5px;
+}
+
+.priorityStyle {
+    height: 8px;
+    margin: 4px 0 2px 10px;
+    border-radius: 4px;
+}
+
+.priorityStyle1 {
+    width: 40px;
+    background-color: #4073bb;
+}
+
+.priorityStyle2 {
+    width: 55px;
+    background-color: #61bd4f;
+}
+
+.priorityStyle3 {
+    width: 70px;
+    background-color: #f2d600;
+}
+
+.priorityStyle4 {
+    width: 85px;
+    background-color: #ff9f1a;
+}
+
+
+.priorityStyle5 {
+    width: 100px;
+    background-color: #eb5a46;
+}
+
 .todoList-task.done {
     opacity: .5;
 }

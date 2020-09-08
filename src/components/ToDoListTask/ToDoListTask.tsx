@@ -48,6 +48,7 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
     render = () => {
         let isStatus = this.props.task.status === 2;
         let isOpacity = isStatus ? `${styles['todoList-task']} ${styles.done}` : styles['todoList-task'];
+        let priorityStyle = [this.props.task.priority, 'priorityStyle' + this.props.task.priority];
         return (
             <div className={isOpacity}>
                 {this.state.isEditMode
@@ -69,18 +70,21 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
                         />
                         <button onClick={this.deActivateEditMode}>Save</button>
                     </div>
-                    : <div>
-                        <input
-                            type='checkbox'
-                            checked={isStatus}
-                            onChange={this.onIsDoneChanged}
-                        />
-                        <span onClick={this.activateEditMode}
-                              title={`id this task: ${this.props.task.id}`}
-                        >{this.props.task.title}
-                             | <b>priority: {this.props.task.priority}</b>
-                        </span>
-
+                    : <div className={styles.taskInfo}>
+                        <div className={`${styles.priorityStyle} ${styles[priorityStyle[1]]}`}
+                             onClick={this.activateEditMode}
+                             title={`Priority: ${this.props.task.priority}`}> </div>
+                        <div>
+                            <input
+                                type='checkbox'
+                                checked={isStatus}
+                                onChange={this.onIsDoneChanged}
+                            />
+                            <span className={styles.taskTitle}
+                                  onClick={this.activateEditMode}
+                                  title={`id this task: ${this.props.task.id}`}
+                            >{this.props.task.title}</span>
+                        </div>
                     </div>
                 }
                 <div>
