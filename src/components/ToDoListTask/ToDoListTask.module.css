@@ -17,6 +17,42 @@
     background-color: #c4d9c7;
 }
 
+.editMode {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.editMode input {
+    margin: 5px;
+    background-color: #ebecf0;
+    border: none;
+    outline: none;
+    padding: 4px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.editMode span {
+    margin: 5px;
+}
+
+.editMode button {
+    background-color: #5aac44;
+    border: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+    width: 70px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.editMode button:hover {
+    background-color: #6ecb50;
+}
+
 .todoList-task.done {
     opacity: .5;
 }

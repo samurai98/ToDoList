@@ -7,7 +7,7 @@ import styles from './ToDoListTasks.module.css'
 type OwnPropsType = {
     tasks: Array<TaskType>
     changeStatus: (newTask: TaskType, status: boolean) => void
-    changeTitle: (newTask: TaskType, title: string) => void
+    changeTitle: (newTask: TaskType, title: string, priority: number) => void
     deleteTask: (taskId: string) => void
 }
 

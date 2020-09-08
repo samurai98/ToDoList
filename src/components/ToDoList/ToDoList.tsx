@@ -71,8 +71,8 @@ class ToDoList extends React.Component<PropsType, StateType> {
         this.changeTask({...newTask, status: status ? 2 : 0});
     };
 
-    changeTitle = (newTask: TaskType, title: string) => {
-        this.changeTask({...newTask, title: title})
+    changeTitle = (newTask: TaskType, title: string, priority: number) => {
+        this.changeTask({...newTask, title: title, priority: priority})
     };
 
     changeTask = (newTask: TaskType) => {
