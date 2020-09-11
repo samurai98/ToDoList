@@ -34,6 +34,7 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
     };
 
 
+
     render = () => {
         return <div className={styles['todoList-header']}>
             <div className={styles['todoList-header__title']}>
@@ -52,7 +53,6 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
                 <DeleteItemForm id={this.props.idList}
                                 delete={this.props.delete}/>
             </div>
-
         </div>;
     }
 }

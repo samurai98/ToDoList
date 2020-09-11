@@ -28,16 +28,18 @@ export const api = {
         return instance.get<GetTasksType>(`${todolistId}/tasks`).then(res => res.data);
     },
     createTodolist(title: string) {
-        return instance.post<CommonApiType<{item: TodoType}>>('', {title}).then(res => res.data);
+        return instance.post<CommonApiType<{ item: TodoType }>>('', {title}).then(res => res.data);
     },
     createTask(newTaskTitle: string, todolistId: string) {
-        return instance.post<CommonApiType<{item: TaskType}>>(`${todolistId}/tasks`, {title: newTaskTitle}).then(res => res.data);
+        return instance.post<CommonApiType<{ item: TaskType }>>(`${todolistId}/tasks`, {title: newTaskTitle})
+            .then(res => res.data);
     },
     updateTodolist(todolistId: string, newListTitle: string) {
         return instance.put(`${todolistId}`, {title: newListTitle}).then(res => res.data);
     },
-    updateTask(task:TaskType) {
-        return instance.put<CommonApiType<{item: TaskType}>>(`${task.todoListId}/tasks/${task.id}`, task).then(res => res.data);
+    updateTask(task: TaskType) {
+        return instance.put<CommonApiType<{ item: TaskType }>>(`${task.todoListId}/tasks/${task.id}`, task)
+            .then(res => res.data);
     },
     deleteTodolist(todolistId: string) {
         return instance.delete<CommonApiType<{}>>(`${todolistId}`).then(res => res.data);
@@ -45,5 +47,9 @@ export const api = {
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<CommonApiType<{}>>(`${todolistId}/tasks/${taskId}`).then(res => res.data);
     },
+    reorderTask(todolistId: string, taskId: string, putAfterItemId: string) {
+        return instance.put(`${todolistId}/tasks/${taskId}/reorder`,
+            {putAfterItemId: putAfterItemId}).then(res => res.data);
+    }
 
 };

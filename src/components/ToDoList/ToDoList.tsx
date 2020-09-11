@@ -11,6 +11,7 @@ import {
 import {TaskType, TodoType} from '../../types/entities';
 import {AppStateType} from '../../redux/store';
 import styles from './ToDoList.module.css';
+import {Droppable} from "react-beautiful-dnd";
 
 type StateType = {
     state: Array<TodoType>
@@ -21,6 +22,7 @@ type OwnPropsType = {
     idList: string
     title: string
     tasks: Array<TaskType>
+    index: number
 }
 
 type MapDispatchPropsType = {
@@ -83,6 +85,8 @@ class ToDoList extends React.Component<PropsType, StateType> {
         this.props.updateToDoList(this.props.idList, newListTitle)
     };
 
+
+
     render = () => {
         let {tasks = []} = this.props;
 
@@ -96,27 +100,36 @@ class ToDoList extends React.Component<PropsType, StateType> {
                     return true;
             }
         });
-
         return (
             <div className={styles.todoList}>
-                <div className={styles.content}>
-                    <ToDoListTitle title={this.props.title}
-                                   idList={this.props.idList}
-                                   delete={this.deleteToDoList}
-                                   updateTodolist={this.updateTodolist}
-                    />
-                    <ToDoListTasks
-                        tasks={filtredTasks}
-                        changeStatus={this.changeStatus}
-                        changeTitle={this.changeTitle}
-                        deleteTask={this.deleteTask}
-                    />
-                    <AddNewItemForm addItem={this.addTask}/>
-                    <ToDoListFooter
-                        filterValue={this.state.filterValue}
-                        changeFilter={this.changeFilter}
-                    />
-                </div>
+
+                    <div className={styles.content} key={this.props.idList}>
+                        <ToDoListTitle title={this.props.title}
+                                       idList={this.props.idList}
+                                       delete={this.deleteToDoList}
+                                       updateTodolist={this.updateTodolist}
+                        />
+                        <Droppable droppableId={this.props.index+''}>
+                            {(provided) => (
+                                <div ref={provided.innerRef}
+                                     {...provided.droppableProps}>
+                                    <ToDoListTasks
+                                        tasks={filtredTasks}
+                                        changeStatus={this.changeStatus}
+                                        changeTitle={this.changeTitle}
+                                        deleteTask={this.deleteTask}
+                                    />
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                        <AddNewItemForm addItem={this.addTask}/>
+                        <ToDoListFooter
+                            filterValue={this.state.filterValue}
+                            changeFilter={this.changeFilter}
+                        />
+                    </div>
+
             </div>
         );
     }

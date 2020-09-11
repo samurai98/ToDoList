@@ -6,9 +6,13 @@ import styles from './ToDoListTask.module.css';
 
 type OwnPropsType = {
     task: TaskType
+    index: number
     changeStatus: (newTask: TaskType, status: boolean) => void
     changeTitle: (newTask: TaskType, title: string, priority: number) => void
     deleteTask: (taskId: string) => void
+
+    provided: any
+    snapshot: any
 }
 
 type StateType = {
@@ -50,7 +54,12 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
         let isOpacity = isStatus ? `${styles['todoList-task']} ${styles.done}` : styles['todoList-task'];
         let priorityStyle = [this.props.task.priority, 'priorityStyle' + this.props.task.priority];
         return (
-            <div className={isOpacity}>
+            <div className={`${isOpacity} item ${this.props.snapshot.isDragging && 'dragging'}`}
+                 title={'Click to edit!'}
+                 ref={this.props.provided.innerRef}
+                 {...this.props.provided.draggableProps}
+                 {...this.props.provided.dragHandleProps}
+            >
                 {this.state.isEditMode
                     ? <div className={styles.editMode}>
                         <input
@@ -70,9 +79,8 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
                         />
                         <button onClick={this.deActivateEditMode}>Save</button>
                     </div>
-                    : <div className={styles.taskInfo}>
+                    : <div className={styles.taskInfo} onClick={this.activateEditMode}>
                         <div className={`${styles.priorityStyle} ${styles[priorityStyle[1]]}`}
-                             onClick={this.activateEditMode}
                              title={`Priority: ${this.props.task.priority}`}> </div>
                         <div>
                             <input
@@ -93,6 +101,7 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
                     />
                 </div>
             </div>
+
         );
     }
 }

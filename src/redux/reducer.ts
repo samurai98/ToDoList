@@ -359,14 +359,17 @@ export const addToDoList = (title: string): ThunkType => (dispatch: ThunkDispatc
         })
 };
 
-export const addTask = (newText: string, idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.createTask(newText, idList)
+export const addTask = (newText: string, idList: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    let newTaskId = '';
+    await api.createTask(newText, idList)
         .then(res => {
-            dispatch(addTaskSuccess(idList, res.data.item))
+            dispatch(addTaskSuccess(idList, res.data.item));
+            newTaskId = res.data.item.id;
         })
         .catch(() => {
             dispatch(addTaskError())
-        })
+        });
+    return newTaskId;
 };
 
 export const updateToDoList = (idList: string, newListTitle: string): ThunkType => (dispatch: ThunkDispatchType) => {
@@ -410,5 +413,16 @@ export const deleteTask = (idList: string, taskId: string): ThunkType => (dispat
             dispatch(deleteTaskError())
         })
 };
+
+export const reorderTask = (todolistId: string, taskId: string, putAfterItemId: string): ThunkType =>
+    (dispatch: ThunkDispatchType) => {
+        api.reorderTask(todolistId, taskId, putAfterItemId)
+            .then(() => {
+                dispatch(setTasks(todolistId))
+            })
+            .catch(() => {
+                dispatch(setTasksError())
+            })
+    };
 
 
