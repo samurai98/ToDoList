@@ -23,6 +23,8 @@ type OwnPropsType = {
     title: string
     tasks: Array<TaskType>
     index: number
+    provided: any
+    snapshot: any
 }
 
 type MapDispatchPropsType = {
@@ -40,6 +42,12 @@ class ToDoList extends React.Component<PropsType, StateType> {
 
     componentDidMount() {
         this.restoreState();
+    }
+
+    componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<StateType>): void {
+        if (prevProps.tasks !== this.props.tasks) {
+            this.restoreState();
+        }
     }
 
     restoreState = () => {
@@ -86,7 +94,6 @@ class ToDoList extends React.Component<PropsType, StateType> {
     };
 
 
-
     render = () => {
         let {tasks = []} = this.props;
 
@@ -101,35 +108,36 @@ class ToDoList extends React.Component<PropsType, StateType> {
             }
         });
         return (
-            <div className={styles.todoList}>
-
-                    <div className={styles.content} key={this.props.idList}>
+            <div className={styles.todoList}
+                 ref={this.props.provided.innerRef}
+                 {...this.props.provided.draggableProps}>
+                <div className={styles.content} key={this.props.idList}>
+                    <div  {...this.props.provided.dragHandleProps}>
                         <ToDoListTitle title={this.props.title}
                                        idList={this.props.idList}
                                        delete={this.deleteToDoList}
-                                       updateTodolist={this.updateTodolist}
-                        />
-                        <Droppable droppableId={this.props.index+''}>
-                            {(provided) => (
-                                <div ref={provided.innerRef}
-                                     {...provided.droppableProps}>
-                                    <ToDoListTasks
-                                        tasks={filtredTasks}
-                                        changeStatus={this.changeStatus}
-                                        changeTitle={this.changeTitle}
-                                        deleteTask={this.deleteTask}
-                                    />
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                        <AddNewItemForm addItem={this.addTask}/>
-                        <ToDoListFooter
-                            filterValue={this.state.filterValue}
-                            changeFilter={this.changeFilter}
-                        />
+                                       updateTodolist={this.updateTodolist}/>
                     </div>
-
+                    <Droppable droppableId={this.props.index + ''} type={'task'}>
+                        {(provided) => (
+                            <div ref={provided.innerRef}
+                                 {...provided.droppableProps}>
+                                <ToDoListTasks
+                                    tasks={filtredTasks}
+                                    changeStatus={this.changeStatus}
+                                    changeTitle={this.changeTitle}
+                                    deleteTask={this.deleteTask}
+                                />
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                    <AddNewItemForm addItem={this.addTask}/>
+                    <ToDoListFooter
+                        filterValue={this.state.filterValue}
+                        changeFilter={this.changeFilter}
+                    />
+                </div>
             </div>
         );
     }

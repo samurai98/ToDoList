@@ -414,6 +414,17 @@ export const deleteTask = (idList: string, taskId: string): ThunkType => (dispat
         })
 };
 
+export const reorderList = (todolistId: string, putAfterItemId: string): ThunkType =>
+    (dispatch: ThunkDispatchType) => {
+        api.reorderList(todolistId, putAfterItemId)
+            .then(() => {
+                dispatch(setToDoLists())
+            })
+            .catch(() => {
+                dispatch(setToDoListsError())
+            })
+    };
+
 export const reorderTask = (todolistId: string, taskId: string, putAfterItemId: string): ThunkType =>
     (dispatch: ThunkDispatchType) => {
         api.reorderTask(todolistId, taskId, putAfterItemId)

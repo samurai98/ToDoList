@@ -3,10 +3,13 @@ import './App.css';
 import ToDoList from './components/ToDoList/ToDoList';
 import AddNewItemForm from './components/common/AddNewItemForm/AddNewItemForm';
 import {connect} from 'react-redux';
-import {addToDoList, setToDoLists, reorderTask, deleteTask, addTask, updateTask} from './redux/reducer';
+import {
+    addToDoList, setToDoLists, reorderTask,
+    deleteTask, addTask, updateTask, reorderList
+} from './redux/reducer';
 import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
-import {DragDropContext} from 'react-beautiful-dnd';
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
@@ -19,6 +22,7 @@ type MapDispatchPropsType = {
     deleteTask: (idList: string, taskId: string) => void
     addTask: (newText: string, idList: string) => any
     updateTask: (newTask: TaskType) => void
+    reorderList: (todolistId: string, putAfterItemId: string) => void
 }
 
 type PropsType = MapDispatchPropsType & MapStatePropsType;
@@ -47,44 +51,63 @@ class App extends React.Component<PropsType> {
             return;
         }
 
-        // if user want drag task in other list
-        if (result.destination.droppableId !== result.source.droppableId) {
+        // if reorder lists
+        if (result.type === 'column') {
+            let listId = result.draggableId;
+            let endListPositionIndex = result.destination.index;
+            let endListPositionId;
 
-            // add this task in new list
-            let task = this.props.todolists[result.source.droppableId].tasks[result.source.index];
-            let newListId = this.props.todolists[result.destination.droppableId].id;
-            let newTaskId = await this.props.addTask(task.title, newListId);
-
-            // set this task priority in new list
-            if (task.priority !== 1) {
-                this.props.updateTask({...task, todoListId: newListId, id: newTaskId, priority: task.priority})
-            }
-
-            // delete this task in old list
-            let listWhereDeleteTask = this.props.todolists[result.source.droppableId].id;
-            this.props.deleteTask(listWhereDeleteTask, result.draggableId);
-
-            // reorder this task on it position
-            let endNewTaskPositionId;
             if (result.destination.index === 0) {
-                endNewTaskPositionId = '';
-            } else endNewTaskPositionId = this.props.todolists[result.destination.droppableId].tasks[result.destination.index - 1].id;
-            this.props.reorderTask(newListId, newTaskId, endNewTaskPositionId);
+                endListPositionId = '';
+            } else if (result.source.index > result.destination.index) {
+                endListPositionId = this.props.todolists[endListPositionIndex - 1].id;
+            } else endListPositionId = this.props.todolists[endListPositionIndex].id;
 
-        } else {
-            let listIndex = result.destination.droppableId;
-            let listId = this.props.todolists[listIndex].id;
+            this.props.reorderList(listId, endListPositionId);
+        }
 
-            let thisTaskId = result.draggableId;
-            let endTaskPositionIndex = result.destination.index;
+        // if reorder tasks
+        if (result.type === 'task') {
 
-            let endTaskPositionId;
-            if (endTaskPositionIndex === 0) {
-                endTaskPositionId = '';
-            } else if (result.source.index > endTaskPositionIndex) {
-                endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex - 1].id;
-            } else endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex].id;
-            this.props.reorderTask(listId, thisTaskId, endTaskPositionId);
+            // if user want drag task in other list
+            if (result.destination.droppableId !== result.source.droppableId) {
+
+                // add this task in new list
+                let task = this.props.todolists[result.source.droppableId].tasks[result.source.index];
+                let newListId = this.props.todolists[result.destination.droppableId].id;
+                let newTaskId = await this.props.addTask(task.title, newListId);
+
+                // set this task priority in new list
+                if (task.priority !== 1) {
+                    this.props.updateTask({...task, todoListId: newListId, id: newTaskId, priority: task.priority})
+                }
+
+                // delete this task in old list
+                let listWhereDeleteTask = this.props.todolists[result.source.droppableId].id;
+                this.props.deleteTask(listWhereDeleteTask, result.draggableId);
+
+                // reorder this task on it position
+                let endNewTaskPositionId;
+                if (result.destination.index === 0) {
+                    endNewTaskPositionId = '';
+                } else endNewTaskPositionId = this.props.todolists[result.destination.droppableId].tasks[result.destination.index - 1].id;
+                this.props.reorderTask(newListId, newTaskId, endNewTaskPositionId);
+
+            } else {
+                let listIndex = result.destination.droppableId;
+                let listId = this.props.todolists[listIndex].id;
+
+                let thisTaskId = result.draggableId;
+                let endTaskPositionIndex = result.destination.index;
+
+                let endTaskPositionId;
+                if (endTaskPositionIndex === 0) {
+                    endTaskPositionId = '';
+                } else if (result.source.index > endTaskPositionIndex) {
+                    endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex - 1].id;
+                } else endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex].id;
+                this.props.reorderTask(listId, thisTaskId, endTaskPositionId);
+            }
         }
     };
 
@@ -92,18 +115,34 @@ class App extends React.Component<PropsType> {
         const todolists = this.props
             .todolists
             .map((tl, index) =>
-                <ToDoList key={tl.id}
-                          index={index}
-                          idList={tl.id}
-                          title={tl.title}
-                          tasks={tl.tasks}/>);
+                <Draggable draggableId={tl.id}
+                           index={index}
+                           key={tl.id}>
+                    {(provided, snapshot) => (
+                        <ToDoList key={tl.id}
+                                  index={index}
+                                  idList={tl.id}
+                                  title={tl.title}
+                                  tasks={tl.tasks}
+                                  provided={provided}
+                                  snapshot={snapshot}
+                        />
+                    )}
+                </Draggable>);
 
         return (
             <div className='App'>
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <div className='todolists'>
-                        {todolists}
-                    </div>
+                    <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
+                        {(provided) => (
+                            <div className='todolists'
+                                 {...provided.droppableProps}
+                                 ref={provided.innerRef}>
+                                {todolists}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
                     <AddNewItemForm addItem={this.addToDoList}/>
                 </DragDropContext>
             </div>
@@ -122,6 +161,7 @@ export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType
     setToDoLists,
     addToDoList,
     reorderTask,
+    reorderList,
     addTask,
     updateTask,
     deleteTask
