@@ -11,10 +11,12 @@ import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import Preloader from './components/common/Preloader/Preloader';
+import Login from './components/Login/Login';
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
     isLoading: boolean
+    isAuth?: boolean
 }
 
 type MapDispatchPropsType = {
@@ -82,7 +84,12 @@ class App extends React.Component<PropsType> {
 
                 // set this task priority in new list
                 if (task.priority !== 1) {
-                    await this.props.updateTask({...task, todoListId: newListId, id: newTaskId, priority: task.priority})
+                    await this.props.updateTask({
+                        ...task,
+                        todoListId: newListId,
+                        id: newTaskId,
+                        priority: task.priority
+                    })
                 }
 
                 // delete this task in old list
@@ -133,32 +140,34 @@ class App extends React.Component<PropsType> {
                     )}
                 </Draggable>);
         return (<>
-                {this.props.isLoading
-                    ? <Preloader height={'100vh'}/>
-                    : <div className='App'>
-                        <DragDropContext onDragEnd={this.onDragEnd}>
-                            <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
-                                {(provided) => (
-                                    <div className='todolists'
-                                         {...provided.droppableProps}
-                                         ref={provided.innerRef}>
-                                        {todolists}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                            <AddNewItemForm addItem={this.addToDoList}/>
-                        </DragDropContext>
-                    </div>}
-            </>
-        );
+                {!this.props.isAuth
+                    ? <Login/>
+                    : this.props.isLoading
+                        ? <Preloader height={'100vh'}/>
+                        : <div className='App'>
+                            <DragDropContext onDragEnd={this.onDragEnd}>
+                                <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
+                                    {(provided) => (
+                                        <div className='todolists'
+                                             {...provided.droppableProps}
+                                             ref={provided.innerRef}>
+                                            {todolists}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                                <AddNewItemForm addItem={this.addToDoList}/>
+                            </DragDropContext>
+                        </div>}
+            </>);
     }
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         todolists: state.reducer.todolists,
-        isLoading: state.reducer.isLoading
+        isLoading: state.reducer.isLoading,
+        isAuth: state.authReducer.isAuth
     }
 };
 

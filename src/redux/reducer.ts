@@ -1,7 +1,7 @@
-import {api} from "../api/api";
-import {TaskType, TodoType} from "../types/entities";
-import {AppStateType} from "./store";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {api} from '../api/api';
+import {TaskType, TodoType} from '../types/entities';
+import {AppStateType} from './store';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 export const SET_TODOLISTS_SUCCESS = 'TodoAPP/Todolist/SET-TODOLISTS-SUCCESS';
 export const SET_TODOLISTS_ERROR = 'TodoAPP/Todolist/SET-TODOLISTS-ERROR';

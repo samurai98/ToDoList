@@ -1,0 +1,58 @@
+.login {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.info {
+    width: 300px;
+    background-color: #ebecf0;
+    border-radius: 5px;
+    box-shadow: 1px 3px 3px rgba(9, 30, 66, .25);
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+.info p {
+    margin: 1px auto;
+    font-size: 17px;
+}
+
+.input {
+    border: none;
+    outline: none;
+    margin: 5px;
+    height: 25px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    box-shadow: 1px 3px 3px rgba(9, 30, 66, .25);
+}
+
+.checkbox {
+    color: white;
+    margin: 5px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: -3px 0 0 rgba(0, 0, 0, 0.8), 3px 0 0 rgba(0, 0, 0, 0.8);
+}
+
+.button {
+    background-color: #5aac44;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+    width: 111px;
+    height: 32px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #6ecb50;
+}
