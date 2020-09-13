@@ -16,6 +16,7 @@ class Preloader extends React.Component<OwnPropsType> {
                 <div className={styles.second}> </div>
                 <div className={styles.like}> </div>
             </div>
+            <div className={styles.message}>Waiting for server response...</div>
         </div>);
     }
 }

@@ -10,7 +10,7 @@ import {
 import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
-import Preloader from "./components/common/Preloader/Preloader";
+import Preloader from './components/common/Preloader/Preloader';
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
@@ -111,8 +111,6 @@ class App extends React.Component<PropsType> {
                 } else endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex].id;
                 await this.props.reorderTask(listId, thisTaskId, endTaskPositionId);
             }
-
-            // this.props.toggleIsLoading(false);
         }
     };
 

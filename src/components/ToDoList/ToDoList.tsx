@@ -11,8 +11,8 @@ import {
 import {TaskType, TodoType} from '../../types/entities';
 import {AppStateType} from '../../redux/store';
 import styles from './ToDoList.module.css';
-import {Droppable} from "react-beautiful-dnd";
-import Preloader from "../common/Preloader/Preloader";
+import {Droppable} from 'react-beautiful-dnd';
+import Preloader from '../common/Preloader/Preloader';
 
 type StateType = {
     state: Array<TodoType>
@@ -112,7 +112,7 @@ class ToDoList extends React.Component<PropsType, StateType> {
                      {...this.props.provided.draggableProps}>
                     <div className={styles.content} key={this.props.idList}>
                         {this.props.isLoadingList
-                            ? <Preloader height={'25vh'}/>
+                            ? <Preloader height={'35vh'}/>
                             : <>
                                 <div  {...this.props.provided.dragHandleProps}>
                                     <ToDoListTitle title={this.props.title}
