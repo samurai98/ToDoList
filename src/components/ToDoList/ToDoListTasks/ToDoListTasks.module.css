@@ -1,0 +1,5 @@
+.todoList-tasks {
+    margin-top: 10px;
+    max-height: calc(100vh - 50px - 220px);
+    overflow: auto;
+}

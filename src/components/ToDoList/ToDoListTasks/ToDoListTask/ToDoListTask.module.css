@@ -1,5 +1,5 @@
 .todoList-task {
-    width: 260px;
+    max-width: 260px;
     margin: 5px;
     min-height: 35px;
     background-color: white;

@@ -12,6 +12,7 @@ import {AppStateType} from './redux/store';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import Preloader from './components/common/Preloader/Preloader';
 import Login from './components/Login/Login';
+import Header from "./components/Header/Header";
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
@@ -145,6 +146,7 @@ class App extends React.Component<PropsType> {
                     : this.props.isLoading
                         ? <Preloader height={'100vh'}/>
                         : <div className='App'>
+                            <Header/>
                             <DragDropContext onDragEnd={this.onDragEnd}>
                                 <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
                                     {(provided) => (

@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
-import '../../App.css';
-import DeleteItemForm from '../common/DeleteItemForm/DeleteItemForm';
-import {TaskType} from '../../types/entities';
+import '../../../../App.css';
+import DeleteItemForm from '../../../common/DeleteItemForm/DeleteItemForm';
+import {TaskType} from '../../../../types/entities';
 import styles from './ToDoListTask.module.css';
 
 type OwnPropsType = {

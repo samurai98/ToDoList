@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../App.css';
-import ToDoListTask from '../ToDoListTask/ToDoListTask';
-import {TaskType} from '../../types/entities';
+import '../../../App.css';
+import ToDoListTask from './ToDoListTask/ToDoListTask';
+import {TaskType} from '../../../types/entities';
 import styles from './ToDoListTasks.module.css';
 import {Draggable} from "react-beautiful-dnd";
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../App.css';
-import ToDoListTasks from '../ToDoListTasks/ToDoListTasks';
-import ToDoListFooter from '../ToDoListFooter/ToDoListFooter';
+import ToDoListTasks from './ToDoListTasks/ToDoListTasks';
+import ToDoListFooter from './ToDoListFooter/ToDoListFooter';
 import AddNewItemForm from '../common/AddNewItemForm/AddNewItemForm';
-import ToDoListTitle from '../ToDoListTitle/ToDoListTitle';
+import ToDoListTitle from './ToDoListTitle/ToDoListTitle';
 import {connect} from 'react-redux';
 import {
     addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList

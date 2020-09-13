@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import DeleteItemForm from '../common/DeleteItemForm/DeleteItemForm';
+import DeleteItemForm from '../../common/DeleteItemForm/DeleteItemForm';
 import styles from './ToDoListTitle.module.css';
 
 type OwnPropsType = {
