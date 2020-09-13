@@ -6,12 +6,13 @@ import AddNewItemForm from '../common/AddNewItemForm/AddNewItemForm';
 import ToDoListTitle from '../ToDoListTitle/ToDoListTitle';
 import {connect} from 'react-redux';
 import {
-    addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList,
+    addTask, deleteTask, deleteToDoList, setTasks, updateTask, updateToDoList
 } from '../../redux/reducer';
 import {TaskType, TodoType} from '../../types/entities';
 import {AppStateType} from '../../redux/store';
 import styles from './ToDoList.module.css';
 import {Droppable} from "react-beautiful-dnd";
+import Preloader from "../common/Preloader/Preloader";
 
 type StateType = {
     state: Array<TodoType>
@@ -27,6 +28,10 @@ type OwnPropsType = {
     snapshot: any
 }
 
+type MapStatePropsType = {
+    isLoadingList: boolean
+}
+
 type MapDispatchPropsType = {
     setTasks: (idList: string) => void
     addTask: (newText: string, idList: string) => void
@@ -36,7 +41,7 @@ type MapDispatchPropsType = {
     deleteTask: (idList: string, taskId: string) => void
 }
 
-type PropsType = OwnPropsType & MapDispatchPropsType
+type PropsType = OwnPropsType & MapStatePropsType & MapDispatchPropsType
 
 class ToDoList extends React.Component<PropsType, StateType> {
 
@@ -44,14 +49,8 @@ class ToDoList extends React.Component<PropsType, StateType> {
         this.restoreState();
     }
 
-    componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<StateType>): void {
-        if (prevProps.tasks !== this.props.tasks) {
-            this.restoreState();
-        }
-    }
-
     restoreState = () => {
-        this.props.setTasks(this.props.idList)
+        this.props.setTasks(this.props.idList);
     };
 
     state = {
@@ -107,43 +106,53 @@ class ToDoList extends React.Component<PropsType, StateType> {
                     return true;
             }
         });
-        return (
-            <div className={styles.todoList}
-                 ref={this.props.provided.innerRef}
-                 {...this.props.provided.draggableProps}>
-                <div className={styles.content} key={this.props.idList}>
-                    <div  {...this.props.provided.dragHandleProps}>
-                        <ToDoListTitle title={this.props.title}
-                                       idList={this.props.idList}
-                                       delete={this.deleteToDoList}
-                                       updateTodolist={this.updateTodolist}/>
+        return (<>
+                <div className={styles.todoList}
+                     ref={this.props.provided.innerRef}
+                     {...this.props.provided.draggableProps}>
+                    <div className={styles.content} key={this.props.idList}>
+                        {this.props.isLoadingList
+                            ? <Preloader height={'25vh'}/>
+                            : <>
+                                <div  {...this.props.provided.dragHandleProps}>
+                                    <ToDoListTitle title={this.props.title}
+                                                   idList={this.props.idList}
+                                                   delete={this.deleteToDoList}
+                                                   updateTodolist={this.updateTodolist}/>
+                                </div>
+                                <Droppable droppableId={this.props.index + ''} type={'task'}>
+                                    {(provided) => (
+                                        <div ref={provided.innerRef}
+                                             {...provided.droppableProps}>
+                                            <ToDoListTasks
+                                                tasks={filtredTasks}
+                                                changeStatus={this.changeStatus}
+                                                changeTitle={this.changeTitle}
+                                                deleteTask={this.deleteTask}
+                                            />
+                                            {provided.placeholder}
+                                        </div>)}
+                                </Droppable>
+                                <AddNewItemForm addItem={this.addTask}/>
+                            </>}
+                        <ToDoListFooter
+                            filterValue={this.state.filterValue}
+                            changeFilter={this.changeFilter}
+                        />
                     </div>
-                    <Droppable droppableId={this.props.index + ''} type={'task'}>
-                        {(provided) => (
-                            <div ref={provided.innerRef}
-                                 {...provided.droppableProps}>
-                                <ToDoListTasks
-                                    tasks={filtredTasks}
-                                    changeStatus={this.changeStatus}
-                                    changeTitle={this.changeTitle}
-                                    deleteTask={this.deleteTask}
-                                />
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                    <AddNewItemForm addItem={this.addTask}/>
-                    <ToDoListFooter
-                        filterValue={this.state.filterValue}
-                        changeFilter={this.changeFilter}
-                    />
                 </div>
-            </div>
+            </>
         );
     }
 }
 
-export default connect<{}, MapDispatchPropsType, OwnPropsType, AppStateType>(null, {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
+    return {
+        isLoadingList: state.reducer.isLoadingList
+    }
+};
+
+export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
     setTasks, addTask, updateToDoList,
     updateTask, deleteToDoList, deleteTask
 })(ToDoList);

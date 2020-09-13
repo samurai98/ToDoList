@@ -27,16 +27,23 @@ export const DELETE_TODOLIST_ERROR = 'TodoAPP/Todolist/DELETE-TODOLIST-ERROR';
 export const DELETE_TASK_SUCCESS = 'TodoAPP/Todolist/DELETE-TASK-SUCCESS';
 export const DELETE_TASK_ERROR = 'TodoAPP/Todolist/DELETE-TASK-ERROR';
 
+export const TOGGLE_IS_LOADING = 'TodoAPP/Todolist/TOGGLE-IS-LOADING';
+export const TOGGLE_IS_LOADING_LIST = 'TodoAPP/Todolist/TOGGLE-IS-LOADING-LIST';
+
 
 type InitialStateType = {
     todolists: Array<TodoType>
     error: boolean
+    isLoading: boolean
+    isLoadingList: boolean
 }
 
 
 const initialState: InitialStateType = {
     todolists: [],
-    error: false
+    error: false,
+    isLoading: true,
+    isLoadingList: true
 };
 
 export const reducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -150,6 +157,10 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
             };
         case DELETE_TASK_ERROR:
             return {...state, error: true};
+        case TOGGLE_IS_LOADING:
+            return {...state, isLoading: action.isLoading};
+        case TOGGLE_IS_LOADING_LIST:
+            return {...state, isLoadingList: action.isLoading};
 
         default:
             return state;
@@ -176,6 +187,8 @@ type ActionsType =
     | DeleteToDoListErrorActionType
     | DeleteTaskSuccessActionType
     | DeleteTaskErrorActionType
+    | ToggleIsLoadingActionType
+    | ToggleIsLoadingListActionType
 
 type SetToDoListsSuccessActionType = {
     type: typeof SET_TODOLISTS_SUCCESS
@@ -243,6 +256,14 @@ type DeleteTaskSuccessActionType = {
 }
 type DeleteTaskErrorActionType = {
     type: typeof DELETE_TASK_ERROR
+}
+type ToggleIsLoadingActionType = {
+    type: typeof TOGGLE_IS_LOADING
+    isLoading: boolean
+}
+type ToggleIsLoadingListActionType = {
+    type: typeof TOGGLE_IS_LOADING_LIST
+    isLoading: boolean
 }
 
 
@@ -322,44 +343,57 @@ export const deleteTaskSuccess = (todolistId: string, taskId: string): DeleteTas
 export const deleteTaskError = (): DeleteTaskErrorActionType => {
     return {type: DELETE_TASK_ERROR};
 };
+export const toggleIsLoading = (isLoading: boolean): ToggleIsLoadingActionType => {
+    return {type: TOGGLE_IS_LOADING, isLoading: isLoading};
+};
+export const toggleIsLoadingList = (isLoading: boolean): ToggleIsLoadingListActionType => {
+    return {type: TOGGLE_IS_LOADING_LIST, isLoading: isLoading};
+};
 
 // Thunk
 
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionsType>;
 type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionsType>;
 
-export const setToDoLists = (): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.getTodolists()
+export const setToDoLists = (): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.getTodolists()
         .then(res => {
             dispatch(setToDoListsSuccess(res))
         })
         .catch(() => {
             dispatch(setToDoListsError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
-export const setTasks = (idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.getTasks(idList)
+export const setTasks = (idList: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoadingList(true));
+    await api.getTasks(idList)
         .then(res => {
             dispatch(setTasksSuccess(idList, res.items))
         })
         .catch(() => {
             dispatch(setTasksError())
-        })
+        });
+    dispatch(toggleIsLoadingList(false));
 };
 
-export const addToDoList = (title: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.createTodolist(title)
+export const addToDoList = (title: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.createTodolist(title)
         .then(res => {
             let todolist = res.data.item;
             dispatch(addToDoListSuccess(todolist));
         })
         .catch(() => {
             dispatch(addToDoListError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
 export const addTask = (newText: string, idList: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
     let newTaskId = '';
     await api.createTask(newText, idList)
         .then(res => {
@@ -369,11 +403,13 @@ export const addTask = (newText: string, idList: string): ThunkType => async (di
         .catch(() => {
             dispatch(addTaskError())
         });
+    dispatch(toggleIsLoading(false));
     return newTaskId;
 };
 
-export const updateToDoList = (idList: string, newListTitle: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.updateTodolist(idList, newListTitle)
+export const updateToDoList = (idList: string, newListTitle: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.updateTodolist(idList, newListTitle)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(updateToDoListSuccess(idList, newListTitle));
@@ -381,59 +417,70 @@ export const updateToDoList = (idList: string, newListTitle: string): ThunkType 
         })
         .catch(() => {
             dispatch(updateToDoListError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
-export const updateTask = (newTask: TaskType): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.updateTask(newTask)
+export const updateTask = (newTask: TaskType): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.updateTask(newTask)
         .then(res => {
             dispatch(updateTaskSuccess(res.data.item))
         })
         .catch(() => {
             dispatch(updateTaskError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
-export const deleteToDoList = (idList: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.deleteTodolist(idList)
+export const deleteToDoList = (idList: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.deleteTodolist(idList)
         .then(() => {
             dispatch(deleteToDoListSuccess(idList))
         })
         .catch(() => {
             dispatch(deleteToDoListError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
-export const deleteTask = (idList: string, taskId: string): ThunkType => (dispatch: ThunkDispatchType) => {
-    api.deleteTask(idList, taskId)
+export const deleteTask = (idList: string, taskId: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    dispatch(toggleIsLoading(true));
+    await api.deleteTask(idList, taskId)
         .then(() => {
             dispatch(deleteTaskSuccess(idList, taskId));
         })
         .catch(() => {
             dispatch(deleteTaskError())
-        })
+        });
+    dispatch(toggleIsLoading(false));
 };
 
 export const reorderList = (todolistId: string, putAfterItemId: string): ThunkType =>
-    (dispatch: ThunkDispatchType) => {
-        api.reorderList(todolistId, putAfterItemId)
+    async (dispatch: ThunkDispatchType) => {
+        dispatch(toggleIsLoading(true));
+        await api.reorderList(todolistId, putAfterItemId)
             .then(() => {
                 dispatch(setToDoLists())
             })
             .catch(() => {
                 dispatch(setToDoListsError())
-            })
+            });
+        dispatch(toggleIsLoading(false));
     };
 
 export const reorderTask = (todolistId: string, taskId: string, putAfterItemId: string): ThunkType =>
-    (dispatch: ThunkDispatchType) => {
-        api.reorderTask(todolistId, taskId, putAfterItemId)
+    async (dispatch: ThunkDispatchType) => {
+        dispatch(toggleIsLoading(true));
+        await api.reorderTask(todolistId, taskId, putAfterItemId)
             .then(() => {
                 dispatch(setTasks(todolistId))
             })
             .catch(() => {
                 dispatch(setTasksError())
-            })
+            });
+        dispatch(toggleIsLoading(false));
     };
 
 

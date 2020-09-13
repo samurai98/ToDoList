@@ -5,14 +5,16 @@ import AddNewItemForm from './components/common/AddNewItemForm/AddNewItemForm';
 import {connect} from 'react-redux';
 import {
     addToDoList, setToDoLists, reorderTask,
-    deleteTask, addTask, updateTask, reorderList
+    deleteTask, addTask, updateTask, reorderList, toggleIsLoading
 } from './redux/reducer';
 import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+import Preloader from "./components/common/Preloader/Preloader";
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
+    isLoading: boolean
 }
 
 type MapDispatchPropsType = {
@@ -23,6 +25,7 @@ type MapDispatchPropsType = {
     addTask: (newText: string, idList: string) => any
     updateTask: (newTask: TaskType) => void
     reorderList: (todolistId: string, putAfterItemId: string) => void
+    toggleIsLoading: (isLoading: boolean) => void
 }
 
 type PropsType = MapDispatchPropsType & MapStatePropsType;
@@ -63,7 +66,7 @@ class App extends React.Component<PropsType> {
                 endListPositionId = this.props.todolists[endListPositionIndex - 1].id;
             } else endListPositionId = this.props.todolists[endListPositionIndex].id;
 
-            this.props.reorderList(listId, endListPositionId);
+            await this.props.reorderList(listId, endListPositionId);
         }
 
         // if reorder tasks
@@ -79,19 +82,19 @@ class App extends React.Component<PropsType> {
 
                 // set this task priority in new list
                 if (task.priority !== 1) {
-                    this.props.updateTask({...task, todoListId: newListId, id: newTaskId, priority: task.priority})
+                    await this.props.updateTask({...task, todoListId: newListId, id: newTaskId, priority: task.priority})
                 }
 
                 // delete this task in old list
                 let listWhereDeleteTask = this.props.todolists[result.source.droppableId].id;
-                this.props.deleteTask(listWhereDeleteTask, result.draggableId);
+                await this.props.deleteTask(listWhereDeleteTask, result.draggableId);
 
                 // reorder this task on it position
                 let endNewTaskPositionId;
                 if (result.destination.index === 0) {
                     endNewTaskPositionId = '';
                 } else endNewTaskPositionId = this.props.todolists[result.destination.droppableId].tasks[result.destination.index - 1].id;
-                this.props.reorderTask(newListId, newTaskId, endNewTaskPositionId);
+                await this.props.reorderTask(newListId, newTaskId, endNewTaskPositionId);
 
             } else {
                 let listIndex = result.destination.droppableId;
@@ -106,8 +109,10 @@ class App extends React.Component<PropsType> {
                 } else if (result.source.index > endTaskPositionIndex) {
                     endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex - 1].id;
                 } else endTaskPositionId = this.props.todolists[listIndex].tasks[endTaskPositionIndex].id;
-                this.props.reorderTask(listId, thisTaskId, endTaskPositionId);
+                await this.props.reorderTask(listId, thisTaskId, endTaskPositionId);
             }
+
+            // this.props.toggleIsLoading(false);
         }
     };
 
@@ -129,31 +134,33 @@ class App extends React.Component<PropsType> {
                         />
                     )}
                 </Draggable>);
-
-        return (
-            <div className='App'>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
-                        {(provided) => (
-                            <div className='todolists'
-                                 {...provided.droppableProps}
-                                 ref={provided.innerRef}>
-                                {todolists}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                    <AddNewItemForm addItem={this.addToDoList}/>
-                </DragDropContext>
-            </div>
-
+        return (<>
+                {this.props.isLoading
+                    ? <Preloader height={'100vh'}/>
+                    : <div className='App'>
+                        <DragDropContext onDragEnd={this.onDragEnd}>
+                            <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
+                                {(provided) => (
+                                    <div className='todolists'
+                                         {...provided.droppableProps}
+                                         ref={provided.innerRef}>
+                                        {todolists}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                            <AddNewItemForm addItem={this.addToDoList}/>
+                        </DragDropContext>
+                    </div>}
+            </>
         );
     }
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
-        todolists: state.reducer.todolists
+        todolists: state.reducer.todolists,
+        isLoading: state.reducer.isLoading
     }
 };
 
@@ -164,6 +171,7 @@ export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType
     reorderList,
     addTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    toggleIsLoading
 })(App);
 
