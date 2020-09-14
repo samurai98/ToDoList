@@ -3,6 +3,7 @@ import '../../../../App.css';
 import DeleteItemForm from '../../../common/DeleteItemForm/DeleteItemForm';
 import {TaskType} from '../../../../types/entities';
 import styles from './ToDoListTask.module.css';
+import {DraggableProvided, DraggableStateSnapshot} from 'react-beautiful-dnd';
 
 type OwnPropsType = {
     task: TaskType
@@ -10,9 +11,8 @@ type OwnPropsType = {
     changeStatus: (newTask: TaskType, status: boolean) => void
     changeTitle: (newTask: TaskType, title: string, priority: number) => void
     deleteTask: (taskId: string) => void
-
-    provided: any
-    snapshot: any
+    provided: DraggableProvided
+    snapshot: DraggableStateSnapshot
 }
 
 type StateType = {
@@ -90,7 +90,6 @@ class ToDoListTask extends React.Component<OwnPropsType, StateType> {
                             />
                             <span className={styles.taskTitle}
                                   onClick={this.activateEditMode}
-                                  title={`id this task: ${this.props.task.id}`}
                             >{this.props.task.title}</span>
                         </div>
                     </div>

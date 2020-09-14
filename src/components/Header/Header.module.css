@@ -1,44 +1,53 @@
 .header {
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     width: 100%;
     height: 40px;
-    position: fixed;
-    background-color: rgba(0, 0, 0, .32);
+
     color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: rgba(0, 0, 0, .32);
 }
 
 .main {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .error {
-    height: 32px;
     line-height: 32px;
-    border-radius: 5px;
-    padding: 0 15px;
-    background-color: #eb5a46;
+
+    overflow: hidden;
     align-items: center;
+
+    height: 32px;
     margin: 0 30px;
+    padding: 0 15px;
+
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+
     color: white;
+    border-radius: 5px;
+    background-color: #eb5a46;
 }
 
 .logout {
-    margin: 0 50px 0 15px;
-    height: 32px;
     width: 60px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    background-color: hsla(0, 0%, 100%, .3);
-    color: #fff;
+    height: 32px;
+    margin: 0 50px 0 15px;
+
     cursor: pointer;
+
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: hsla(0, 0%, 100%, .3);
 }
 
 .logout:hover {

@@ -1,13 +1,14 @@
 .todoList-task {
-    max-width: 260px;
-    margin: 5px;
-    min-height: 35px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
     display: flex;
     justify-content: space-between;
+
+    max-width: 260px;
+    min-height: 35px;
+    margin: 5px;
     cursor: pointer;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
 }
 
 .todoList-task > div {
@@ -19,20 +20,21 @@
 }
 
 .editMode {
-    width: 250px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    flex-wrap: wrap;
+
+    width: 250px;
 }
 
 .editMode input {
     margin: 5px;
-    background-color: #ebecf0;
-    border: none;
-    outline: none;
     padding: 4px;
-    border-radius: 5px;
     text-align: center;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #ebecf0;
 }
 
 .editMode span {
@@ -40,14 +42,14 @@
 }
 
 .editMode button {
-    background-color: #5aac44;
-    border: none;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
     width: 70px;
     margin: 5px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
     border-radius: 5px;
+    outline: none;
+    background-color: #5aac44;
 }
 
 .editMode button:hover {
@@ -65,8 +67,9 @@
 }
 
 .taskTitle {
-    word-break: break-all;
     margin: 4px 3px 9px 5px;
+
+    word-break: break-all;
 }
 
 .priorityStyle {

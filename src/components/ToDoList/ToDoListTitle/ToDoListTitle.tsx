@@ -34,7 +34,6 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
     };
 
 
-
     render = () => {
         return <div className={styles['todoList-header']}>
             <div className={styles['todoList-header__title']}>
@@ -45,7 +44,6 @@ class ToDoListHeader extends React.Component<OwnPropsType, StateType> {
                              value={this.state.title}/>
                     : <h3 className={styles['todoList-header__title']}
                           onClick={this.activateEditMode}
-                          title={`id this list: ${this.props.idList}`}
                     >{this.props.title}</h3>
                 }
             </div>

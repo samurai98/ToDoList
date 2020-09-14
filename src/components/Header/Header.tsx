@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../redux/auth-reducer';
 import styles from './Header.module.css';
-import {AppStateType} from "../../redux/store";
+import {AppStateType} from '../../redux/store';
 
 const Header = () => {
 

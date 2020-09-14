@@ -11,7 +11,7 @@ import {
 import {TaskType, TodoType} from '../../types/entities';
 import {AppStateType} from '../../redux/store';
 import styles from './ToDoList.module.css';
-import {Droppable} from 'react-beautiful-dnd';
+import {DraggableStateSnapshot, Droppable, DraggableProvided} from 'react-beautiful-dnd';
 import Preloader from '../common/Preloader/Preloader';
 
 type StateType = {
@@ -24,8 +24,8 @@ type OwnPropsType = {
     title: string
     tasks: Array<TaskType>
     index: number
-    provided: any
-    snapshot: any
+    provided: DraggableProvided
+    snapshot: DraggableStateSnapshot
 }
 
 type MapStatePropsType = {

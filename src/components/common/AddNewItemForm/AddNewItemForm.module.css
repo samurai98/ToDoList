@@ -1,18 +1,19 @@
 .todoList-newTaskForm {
     max-height: 70px;
-    background-color: #ebecf0;
-    border-radius: 5px;
     padding: 4px;
+    border-radius: 5px;
+    background-color: #ebecf0;
 }
 
 .todoList-newTaskForm input {
-    border: none;
-    outline: none;
     display: block;
     width: 200px;
     height: 16px;
     padding: 8px 12px;
+
+    border: none;
     border-radius: 5px;
+    outline: none;
     box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
 }
 
@@ -21,16 +22,16 @@
 }
 
 .todoList-newTaskForm button {
-    background-color: #5aac44;
-    border: none;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
     width: 111px;
     height: 26px;
     margin: 5px;
     padding: 4px 12px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
     border-radius: 5px;
+    outline: none;
+    background-color: #5aac44;
 }
 
 .todoList-newTaskForm button:hover {
@@ -39,6 +40,6 @@
 
 
 .error {
-    background-color: rgba(187, 92, 81, 0.75);
     color: white;
+    background-color: rgba(187, 92, 81, .75);
 }

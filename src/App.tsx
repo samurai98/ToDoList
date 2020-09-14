@@ -10,10 +10,10 @@ import {
 import {getAuthUserData} from './redux/auth-reducer';
 import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
-import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+import {DragDropContext, Draggable, Droppable, DraggableStateSnapshot, DraggableProvided} from 'react-beautiful-dnd';
 import Preloader from './components/common/Preloader/Preloader';
 import Login from './components/Login/Login';
-import Header from "./components/Header/Header";
+import Header from './components/Header/Header';
 
 type MapStatePropsType = {
     todolists: Array<TodoType>
@@ -126,9 +126,8 @@ class App extends React.Component<PropsType> {
     };
 
 
-
     render = () => {
-        if(!this.props.isAuth) {
+        if (!this.props.isAuth) {
             this.props.getAuthUserData();
             this.props.setToDoListsError('');
         }
@@ -139,7 +138,7 @@ class App extends React.Component<PropsType> {
                 <Draggable draggableId={tl.id}
                            index={index}
                            key={tl.id}>
-                    {(provided, snapshot) => (
+                    {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                         <ToDoList key={tl.id}
                                   index={index}
                                   idList={tl.id}
@@ -151,27 +150,27 @@ class App extends React.Component<PropsType> {
                     )}
                 </Draggable>);
         return (<>
-                {!this.props.isAuth
-                    ? <Login/>
-                    : this.props.isLoading
-                        ? <Preloader height={'100vh'}/>
-                        : <div className='App'>
-                            <Header/>
-                            <DragDropContext onDragEnd={this.onDragEnd}>
-                                <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
-                                    {(provided) => (
-                                        <div className='todolists'
-                                             {...provided.droppableProps}
-                                             ref={provided.innerRef}>
-                                            {todolists}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
-                                <AddNewItemForm addItem={this.addToDoList}/>
-                            </DragDropContext>
-                        </div>}
-            </>);
+            {!this.props.isAuth
+                ? <Login/>
+                : this.props.isLoading
+                    ? <Preloader height={'100vh'}/>
+                    : <div className='App'>
+                        <Header/>
+                        <DragDropContext onDragEnd={this.onDragEnd}>
+                            <Droppable droppableId={'all-columns'} direction={'horizontal'} type={'column'}>
+                                {(provided) => (
+                                    <div className='todolists'
+                                         {...provided.droppableProps}
+                                         ref={provided.innerRef}>
+                                        {todolists}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                            <AddNewItemForm addItem={this.addToDoList}/>
+                        </DragDropContext>
+                    </div>}
+        </>);
     }
 }
 

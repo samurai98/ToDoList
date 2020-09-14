@@ -1,11 +1,11 @@
-import axios from "axios";
-import {TaskType, TodoType} from "../types/entities";
+import axios from 'axios';
+import {TaskType, TodoType} from '../types/entities';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {'API-KEY': '641371ec-d5ac-4e54-91b7-f9eab8c7c8f0'} //my
-     //headers: {'API-KEY': '421593e8-55e9-4a16-9adc-2959bf4b1754'} //test
+    //headers: {'API-KEY': '421593e8-55e9-4a16-9adc-2959bf4b1754'} //test
 });
 
 type CommonApiType<T> = {
@@ -59,7 +59,7 @@ export const api = {
     me() {
         return instance.get(`auth/me`).then(response => response.data);
     },
-    login(email:string, password:string, rememberMe = false, captcha:string | null = null) {
+    login(email: string, password: string, rememberMe = false, captcha: string | null = null) {
         return instance.post(`auth/login`, {email, password, rememberMe, captcha});
     },
     logout() {

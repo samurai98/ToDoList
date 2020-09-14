@@ -19,8 +19,3 @@ export type TaskType = {
     order: number
     addedDate: string
 }
-
-export type TodoUpdateObject = {
-    status: number
-    title: string
-}

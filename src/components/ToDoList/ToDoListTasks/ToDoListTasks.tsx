@@ -3,7 +3,7 @@ import '../../../App.css';
 import ToDoListTask from './ToDoListTask/ToDoListTask';
 import {TaskType} from '../../../types/entities';
 import styles from './ToDoListTasks.module.css';
-import {Draggable} from "react-beautiful-dnd";
+import {Draggable, DraggableProvided, DraggableStateSnapshot} from 'react-beautiful-dnd';
 
 
 type OwnPropsType = {
@@ -20,7 +20,7 @@ class ToDoListTasks extends React.Component<OwnPropsType> {
                 <Draggable draggableId={t.id}
                            index={index}
                            key={t.id}>
-                    {(provided, snapshot) => (
+                    {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                         <ToDoListTask
                             key={t.id}
                             index={index}

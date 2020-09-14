@@ -1,4 +1,5 @@
-.App, .todolists {
+.App,
+.todolists {
     display: flex;
     flex-direction: row;
 }
@@ -14,4 +15,3 @@
 .App > div:first-child {
     margin-top: 0;
 }
-
