@@ -33,7 +33,7 @@ export const TOGGLE_IS_LOADING_LIST = 'TodoAPP/Todolist/TOGGLE-IS-LOADING-LIST';
 
 type InitialStateType = {
     todolists: Array<TodoType>
-    error: boolean
+    error: string
     isLoading: boolean
     isLoadingList: boolean
 }
@@ -41,7 +41,7 @@ type InitialStateType = {
 
 const initialState: InitialStateType = {
     todolists: [],
-    error: false,
+    error: '',
     isLoading: true,
     isLoadingList: true
 };
@@ -57,7 +57,7 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
             };
         case SET_TODOLISTS_ERROR:
             return {
-                ...state, error: true
+                ...state, error: action.error ? 'SET TODOLISTS ERROR. ' + action.error : ''
             };
 
         case SET_TASKS_SUCCESS:
@@ -73,13 +73,13 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
             };
         case SET_TASKS_ERROR:
             return {
-                ...state, error: true
+                ...state, error: action.error ? 'SET TASKS ERROR. ' + action.error : ''
             };
 
         case ADD_TODOLIST_SUCCESS:
             return {...state, todolists: [...state.todolists, action.newToDoList]};
         case ADD_TODOLIST_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'ADD TODOLIST ERROR. ' + action.error : ''};
 
         case ADD_TASK_SUCCESS:
             return {
@@ -93,7 +93,7 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
                 })
             };
         case ADD_TASK_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'ADD TASK ERROR. ' + action.error : ''};
 
         case UPDATE_TODOLIST_SUCCESS:
             return {
@@ -110,7 +110,7 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
                 })
             };
         case UPDATE_TODOLIST_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'UPDATE TODOLIST ERROR. ' + action.error : ''};
 
         case UPDATE_TASK_SUCCESS:
             return {
@@ -133,7 +133,7 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
                 })
             };
         case UPDATE_TASK_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'UPDATE TASK ERROR. ' + action.error : ''};
 
         case DELETE_TODOLIST_SUCCESS:
             return {
@@ -141,7 +141,7 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
                 todolists: state.todolists.filter(todo => todo.id !== action.todolistId)
             };
         case DELETE_TODOLIST_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'DELETE TODOLIST ERROR. ' + action.error : ''};
 
         case DELETE_TASK_SUCCESS:
             return {
@@ -155,8 +155,10 @@ export const reducer = (state: InitialStateType = initialState, action: ActionsT
                     } else return todo;
                 })
             };
+
         case DELETE_TASK_ERROR:
-            return {...state, error: true};
+            return {...state, error: action.error ? 'DELETE TASK ERROR. ' + action.error : ''};
+
         case TOGGLE_IS_LOADING:
             return {...state, isLoading: action.isLoading};
         case TOGGLE_IS_LOADING_LIST:
@@ -196,6 +198,7 @@ type SetToDoListsSuccessActionType = {
 }
 type SetToDoListsErrorActionType = {
     type: typeof SET_TODOLISTS_ERROR
+    error: string
 }
 
 type SetTasksSuccessActionType = {
@@ -205,6 +208,7 @@ type SetTasksSuccessActionType = {
 }
 type SetTasksErrorActionType = {
     type: typeof SET_TASKS_ERROR
+    error: string
 }
 
 type AddToDoListSuccessActionType = {
@@ -213,6 +217,7 @@ type AddToDoListSuccessActionType = {
 }
 type AddToDoListErrorActionType = {
     type: typeof ADD_TODOLIST_ERROR
+    error: string
 }
 
 type AddTaskSuccessActionType = {
@@ -222,6 +227,7 @@ type AddTaskSuccessActionType = {
 }
 type AddTaskErrorActionType = {
     type: typeof ADD_TASK_ERROR
+    error: string
 }
 
 type UpdateToDoListSuccessActionType = {
@@ -231,6 +237,7 @@ type UpdateToDoListSuccessActionType = {
 }
 type UpdateToDoListErrorActionType = {
     type: typeof UPDATE_TODOLIST_ERROR
+    error: string
 }
 
 type UpdateTaskSuccessActionType = {
@@ -239,6 +246,7 @@ type UpdateTaskSuccessActionType = {
 }
 type UpdateTaskErrorActionType = {
     type: typeof UPDATE_TASK_ERROR
+    error: string
 }
 
 type DeleteToDoListSuccessActionType = {
@@ -247,6 +255,7 @@ type DeleteToDoListSuccessActionType = {
 }
 type DeleteToDoListErrorActionType = {
     type: typeof DELETE_TODOLIST_ERROR
+    error: string
 }
 
 type DeleteTaskSuccessActionType = {
@@ -256,6 +265,7 @@ type DeleteTaskSuccessActionType = {
 }
 type DeleteTaskErrorActionType = {
     type: typeof DELETE_TASK_ERROR
+    error: string
 }
 type ToggleIsLoadingActionType = {
     type: typeof TOGGLE_IS_LOADING
@@ -273,8 +283,8 @@ export const setToDoListsSuccess = (todolists: Array<TodoType>): SetToDoListsSuc
         todolists
     };
 };
-export const setToDoListsError = (): SetToDoListsErrorActionType => {
-    return {type: SET_TODOLISTS_ERROR};
+export const setToDoListsError = (error: string): SetToDoListsErrorActionType => {
+    return {type: SET_TODOLISTS_ERROR, error};
 };
 
 export const setTasksSuccess = (todolistId: string, tasks: Array<TaskType>): SetTasksSuccessActionType => {
@@ -284,8 +294,8 @@ export const setTasksSuccess = (todolistId: string, tasks: Array<TaskType>): Set
         tasks
     };
 };
-export const setTasksError = (): SetTasksErrorActionType => {
-    return {type: SET_TASKS_ERROR};
+export const setTasksError = (error: string): SetTasksErrorActionType => {
+    return {type: SET_TASKS_ERROR, error};
 };
 
 export const addToDoListSuccess = (newToDoList: TodoType): AddToDoListSuccessActionType => {
@@ -294,8 +304,8 @@ export const addToDoListSuccess = (newToDoList: TodoType): AddToDoListSuccessAct
         newToDoList
     }
 };
-export const addToDoListError = (): AddToDoListErrorActionType => {
-    return {type: ADD_TODOLIST_ERROR};
+export const addToDoListError = (error: string): AddToDoListErrorActionType => {
+    return {type: ADD_TODOLIST_ERROR, error};
 };
 
 export const addTaskSuccess = (todolistId: string, newTask: TaskType): AddTaskSuccessActionType => {
@@ -305,22 +315,22 @@ export const addTaskSuccess = (todolistId: string, newTask: TaskType): AddTaskSu
         newTask
     };
 };
-export const addTaskError = (): AddTaskErrorActionType => {
-    return {type: ADD_TASK_ERROR};
+export const addTaskError = (error: string): AddTaskErrorActionType => {
+    return {type: ADD_TASK_ERROR, error};
 };
 
 export const updateToDoListSuccess = (todoListId: string, newTitle: string): UpdateToDoListSuccessActionType => {
     return {type: UPDATE_TODOLIST_SUCCESS, todoListId, newTitle};
 };
-export const updateToDoListError = (): UpdateToDoListErrorActionType => {
-    return {type: UPDATE_TODOLIST_ERROR};
+export const updateToDoListError = (error: string): UpdateToDoListErrorActionType => {
+    return {type: UPDATE_TODOLIST_ERROR, error};
 };
 
 export const updateTaskSuccess = (task: TaskType): UpdateTaskSuccessActionType => {
     return {type: UPDATE_TASK_SUCCESS, task};
 };
-export const updateTaskError = (): UpdateTaskErrorActionType => {
-    return {type: UPDATE_TASK_ERROR};
+export const updateTaskError = (error: string): UpdateTaskErrorActionType => {
+    return {type: UPDATE_TASK_ERROR, error};
 };
 
 export const deleteToDoListSuccess = (todolistId: string): DeleteToDoListSuccessActionType => {
@@ -329,8 +339,8 @@ export const deleteToDoListSuccess = (todolistId: string): DeleteToDoListSuccess
         todolistId
     };
 };
-export const deleteToDoListError = (): DeleteToDoListErrorActionType => {
-    return {type: DELETE_TODOLIST_ERROR};
+export const deleteToDoListError = (error: string): DeleteToDoListErrorActionType => {
+    return {type: DELETE_TODOLIST_ERROR, error};
 };
 
 export const deleteTaskSuccess = (todolistId: string, taskId: string): DeleteTaskSuccessActionType => {
@@ -340,8 +350,8 @@ export const deleteTaskSuccess = (todolistId: string, taskId: string): DeleteTas
         taskId
     };
 };
-export const deleteTaskError = (): DeleteTaskErrorActionType => {
-    return {type: DELETE_TASK_ERROR};
+export const deleteTaskError = (error: string): DeleteTaskErrorActionType => {
+    return {type: DELETE_TASK_ERROR, error};
 };
 export const toggleIsLoading = (isLoading: boolean): ToggleIsLoadingActionType => {
     return {type: TOGGLE_IS_LOADING, isLoading: isLoading};
@@ -359,10 +369,10 @@ export const setToDoLists = (): ThunkType => async (dispatch: ThunkDispatchType)
     dispatch(toggleIsLoading(true));
     await api.getTodolists()
         .then(res => {
-            dispatch(setToDoListsSuccess(res))
+            dispatch(setToDoListsSuccess(res));
         })
-        .catch(() => {
-            dispatch(setToDoListsError())
+        .catch(res => {
+            dispatch(setToDoListsError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -371,10 +381,10 @@ export const setTasks = (idList: string): ThunkType => async (dispatch: ThunkDis
     dispatch(toggleIsLoadingList(true));
     await api.getTasks(idList)
         .then(res => {
-            dispatch(setTasksSuccess(idList, res.items))
+            dispatch(setTasksSuccess(idList, res.items));
         })
-        .catch(() => {
-            dispatch(setTasksError())
+        .catch(res => {
+            dispatch(setTasksError(res));
         });
     dispatch(toggleIsLoadingList(false));
 };
@@ -385,9 +395,10 @@ export const addToDoList = (title: string): ThunkType => async (dispatch: ThunkD
         .then(res => {
             let todolist = res.data.item;
             dispatch(addToDoListSuccess(todolist));
+            dispatch(addToDoListError(''));
         })
-        .catch(() => {
-            dispatch(addToDoListError())
+        .catch(res => {
+            dispatch(addToDoListError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -398,10 +409,11 @@ export const addTask = (newText: string, idList: string): ThunkType => async (di
     await api.createTask(newText, idList)
         .then(res => {
             dispatch(addTaskSuccess(idList, res.data.item));
+            dispatch(addTaskError(''));
             newTaskId = res.data.item.id;
         })
-        .catch(() => {
-            dispatch(addTaskError())
+        .catch(res => {
+            dispatch(addTaskError(res));
         });
     dispatch(toggleIsLoading(false));
     return newTaskId;
@@ -413,10 +425,11 @@ export const updateToDoList = (idList: string, newListTitle: string): ThunkType 
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(updateToDoListSuccess(idList, newListTitle));
+                dispatch(updateToDoListError(''));
             }
         })
-        .catch(() => {
-            dispatch(updateToDoListError())
+        .catch(res => {
+            dispatch(updateToDoListError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -425,10 +438,11 @@ export const updateTask = (newTask: TaskType): ThunkType => async (dispatch: Thu
     dispatch(toggleIsLoading(true));
     await api.updateTask(newTask)
         .then(res => {
-            dispatch(updateTaskSuccess(res.data.item))
+            dispatch(updateTaskSuccess(res.data.item));
+            dispatch(updateTaskError(''));
         })
-        .catch(() => {
-            dispatch(updateTaskError())
+        .catch(res => {
+            dispatch(updateTaskError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -437,10 +451,11 @@ export const deleteToDoList = (idList: string): ThunkType => async (dispatch: Th
     dispatch(toggleIsLoading(true));
     await api.deleteTodolist(idList)
         .then(() => {
-            dispatch(deleteToDoListSuccess(idList))
+            dispatch(deleteToDoListSuccess(idList));
+            dispatch(deleteToDoListError(''));
         })
-        .catch(() => {
-            dispatch(deleteToDoListError())
+        .catch(res => {
+            dispatch(deleteToDoListError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -450,9 +465,10 @@ export const deleteTask = (idList: string, taskId: string): ThunkType => async (
     await api.deleteTask(idList, taskId)
         .then(() => {
             dispatch(deleteTaskSuccess(idList, taskId));
+            dispatch(deleteTaskError(''));
         })
-        .catch(() => {
-            dispatch(deleteTaskError())
+        .catch(res => {
+            dispatch(deleteTaskError(res));
         });
     dispatch(toggleIsLoading(false));
 };
@@ -462,10 +478,11 @@ export const reorderList = (todolistId: string, putAfterItemId: string): ThunkTy
         dispatch(toggleIsLoading(true));
         await api.reorderList(todolistId, putAfterItemId)
             .then(() => {
-                dispatch(setToDoLists())
+                dispatch(setToDoLists());
+                dispatch(setToDoListsError(''));
             })
-            .catch(() => {
-                dispatch(setToDoListsError())
+            .catch(res => {
+                dispatch(setToDoListsError(res));
             });
         dispatch(toggleIsLoading(false));
     };
@@ -475,10 +492,11 @@ export const reorderTask = (todolistId: string, taskId: string, putAfterItemId: 
         dispatch(toggleIsLoading(true));
         await api.reorderTask(todolistId, taskId, putAfterItemId)
             .then(() => {
-                dispatch(setTasks(todolistId))
+                dispatch(setTasks(todolistId));
+                dispatch(setTasksError(''));
             })
-            .catch(() => {
-                dispatch(setTasksError())
+            .catch(res => {
+                dispatch(setTasksError(res));
             });
         dispatch(toggleIsLoading(false));
     };

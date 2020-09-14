@@ -56,7 +56,6 @@ export const api = {
             {putAfterItemId: putAfterItemId}).then(res => res.data);
     },
 
-
     me() {
         return instance.get(`auth/me`).then(response => response.data);
     },

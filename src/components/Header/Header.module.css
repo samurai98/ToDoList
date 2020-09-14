@@ -2,5 +2,45 @@
     width: 100%;
     height: 40px;
     position: fixed;
+    background-color: rgba(0, 0, 0, .32);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.error {
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    padding: 0 15px;
     background-color: #eb5a46;
+    align-items: center;
+    margin: 0 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: white;
+}
+
+.logout {
+    margin: 0 50px 0 15px;
+    height: 32px;
+    width: 60px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: hsla(0, 0%, 100%, .3);
+    color: #fff;
+    cursor: pointer;
+}
+
+.logout:hover {
+    background-color: hsla(0, 0%, 100%, .2);
 }

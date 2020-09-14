@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAuthUserData, login} from '../../redux/auth-reducer';
+import {login} from '../../redux/auth-reducer';
 import styles from './Login.module.css';
-import {AppStateType} from "../../redux/store";
-import Preloader from "../common/Preloader/Preloader";
+import stylesHeader from '../Header/Header.module.css';
+import {AppStateType} from '../../redux/store';
+import Preloader from '../common/Preloader/Preloader';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -14,10 +15,9 @@ const Login = () => {
     const captchaUrl = useSelector((state: AppStateType): string | null | undefined =>
         state.authReducer.captchaUrl);
     const isLoading = useSelector((state: AppStateType): boolean => state.reducer.isLoading);
+    const error = useSelector((state: AppStateType): string => state.authReducer.authError);
 
     const dispatch = useDispatch();
-
-    dispatch(getAuthUserData());
 
     return (<>
         {isLoading
@@ -33,6 +33,10 @@ const Login = () => {
                     <p>Password: <b>free</b></p>
                 </div>
 
+                {error && <div className={stylesHeader.error}>
+                    Error: {error}
+                </div>}
+
                 <input type='email' className={styles.input}
                        onChange={e => setEmail(e.currentTarget.value)}
                        value={email} placeholder={'Email'}/>
@@ -47,14 +51,11 @@ const Login = () => {
                     </label>
                 </div>
 
-                {captchaUrl && <img src={captchaUrl} alt='captcha'/>} // TODO:test
+                {captchaUrl && <img src={captchaUrl} alt='captcha'/>}
                 {captchaUrl && <input className={styles.input} type='text'
                                       onChange={e => setCaptcha(e.currentTarget.value)}
                                       value={captcha} placeholder={'Enter captcha'}/>}
 
-                {/*{error && <div className={styles.formSummaryError}> // TODO:refactor*/}
-                {/*    {error}*/}
-                {/*</div>}*/}
                 <div>
                     <button className={styles.button}
                             onClick={() => dispatch(login(email, password, rememberMe, captcha))}>

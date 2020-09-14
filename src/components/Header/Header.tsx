@@ -1,26 +1,32 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAuthUserData, login} from '../../redux/auth-reducer';
+import {logout} from '../../redux/auth-reducer';
 import styles from './Header.module.css';
 import {AppStateType} from "../../redux/store";
-import Preloader from "../common/Preloader/Preloader";
 
 const Header = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
-    const [captcha, setCaptcha] = useState('');
 
-    const captchaUrl = useSelector((state: AppStateType): string | null | undefined =>
-        state.authReducer.captchaUrl);
-    const isLoading = useSelector((state: AppStateType): boolean => state.reducer.isLoading);
+    const error = useSelector((state: AppStateType): string =>
+        state.reducer.error);
+    const login = useSelector((state: AppStateType): string | null | undefined => state.authReducer.login);
 
     const dispatch = useDispatch();
 
 
-    return (<div className={styles.header}>
-        HEADER
-    </div>)
+    return (<>
+        <div className={styles.header}>
+            {error ? <div className={styles.error}> Error: {error} </div> : <div> </div>}
+
+            <div className={styles.main}>
+                <div className={styles.userInfo}>
+                    Welcome, <b>{login}</b>
+                </div>
+                <button className={styles.logout}
+                        onClick={() => dispatch(logout())}>Logout
+                </button>
+            </div>
+        </div>
+    </>)
 };
 
 export default Header;

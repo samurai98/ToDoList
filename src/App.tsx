@@ -4,9 +4,10 @@ import ToDoList from './components/ToDoList/ToDoList';
 import AddNewItemForm from './components/common/AddNewItemForm/AddNewItemForm';
 import {connect} from 'react-redux';
 import {
-    addToDoList, setToDoLists, reorderTask,
+    addToDoList, setToDoLists, reorderTask, setToDoListsError,
     deleteTask, addTask, updateTask, reorderList, toggleIsLoading
 } from './redux/reducer';
+import {getAuthUserData} from './redux/auth-reducer';
 import {TaskType, TodoType} from './types/entities';
 import {AppStateType} from './redux/store';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
@@ -29,6 +30,8 @@ type MapDispatchPropsType = {
     updateTask: (newTask: TaskType) => void
     reorderList: (todolistId: string, putAfterItemId: string) => void
     toggleIsLoading: (isLoading: boolean) => void
+    getAuthUserData: () => void
+    setToDoListsError: (error: string) => void
 }
 
 type PropsType = MapDispatchPropsType & MapStatePropsType;
@@ -122,7 +125,14 @@ class App extends React.Component<PropsType> {
         }
     };
 
+
+
     render = () => {
+        if(!this.props.isAuth) {
+            this.props.getAuthUserData();
+            this.props.setToDoListsError('');
+        }
+
         const todolists = this.props
             .todolists
             .map((tl, index) =>
@@ -181,6 +191,8 @@ export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType
     addTask,
     updateTask,
     deleteTask,
-    toggleIsLoading
+    toggleIsLoading,
+    getAuthUserData,
+    setToDoListsError
 })(App);
 

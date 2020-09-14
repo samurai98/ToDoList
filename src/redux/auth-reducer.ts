@@ -1,10 +1,11 @@
 import {api} from '../api/api';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {AppStateType} from './store';
-import {setToDoLists} from "./reducer";
+import {setToDoLists} from './reducer';
 
 const SET_USER_DATA = 'TodoAPP/Todolist/auth/SET-USER-DATA';
-const GET_CAPTCHA_URL = 'TodoAPP/Todolist/auth/GET-CAPTCHA-URL-SUCCESS';
+const GET_CAPTCHA_URL = 'TodoAPP/Todolist/auth/GET-CAPTCHA-URL';
+const SET_AUTH_ERROR = 'TodoAPP/Todolist/auth/SET-AUTH-ERROR';
 
 type InitialStateType = {
     userId?: string | null
@@ -12,6 +13,7 @@ type InitialStateType = {
     login?: string | null
     isAuth?: boolean
     captchaUrl?: string | null
+    authError: string
 }
 
 const initialState: InitialStateType = {
@@ -19,7 +21,8 @@ const initialState: InitialStateType = {
     email: null,
     login: null,
     isAuth: false,
-    captchaUrl: null
+    captchaUrl: null,
+    authError: ''
 };
 
 const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -37,6 +40,10 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
                 ...state,
                 captchaUrl: action.captchaUrl
             };
+        case SET_AUTH_ERROR:
+            return {
+                ...state, authError: action.error
+            };
         default:
             return state;
     }
@@ -44,7 +51,8 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
 
 type ActionsType =
     setAuthUserDataActionType
-    | getCaptchaUrlSuccessActionType
+    | getCaptchaUrlActionType
+    | setAuthErrorActionType
 
 type setAuthUserDataActionType = {
     type: typeof SET_USER_DATA
@@ -53,9 +61,13 @@ type setAuthUserDataActionType = {
     login: string | null
     isAuth: boolean
 }
-type getCaptchaUrlSuccessActionType = {
+type getCaptchaUrlActionType = {
     type: typeof GET_CAPTCHA_URL
     captchaUrl: string
+}
+type setAuthErrorActionType = {
+    type: typeof SET_AUTH_ERROR
+    error: string
 }
 
 // ActionCreators
@@ -64,8 +76,11 @@ export const setAuthUserData = (userId: string | null, email: string | null,
                                 login: string | null, isAuth: boolean): setAuthUserDataActionType =>
     ({type: SET_USER_DATA, userId, email, login, isAuth});
 
-export const getCaptchaUrlSuccess = (captchaUrl: string): getCaptchaUrlSuccessActionType =>
+export const getCaptchaUrlSuccess = (captchaUrl: string): getCaptchaUrlActionType =>
     ({type: GET_CAPTCHA_URL, captchaUrl});
+
+export const setAuthError = (error: string): setAuthErrorActionType =>
+    ({type: SET_AUTH_ERROR, error});
 
 // Thunk
 
@@ -86,12 +101,13 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         const response = await api.login(email, password, rememberMe, captcha);
         if (response.data.resultCode === 0) {
             dispatch(getAuthUserData());
+            dispatch(setAuthError(''));
         } else {
             if (response.data.resultCode === 10) {
                 dispatch(getCaptchaUrl());
             }
             let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Some Error';
-            //dispatch(stopSubmit('login', {_error: message}));
+            dispatch(setAuthError('Auth error. ' + message));
         }
     };
 
