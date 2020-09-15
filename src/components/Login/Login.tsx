@@ -26,9 +26,6 @@ const Login = () => {
                 <div className={styles.info}>
                     <h1>TODOLIST</h1>
                     <p>For test this app, enter</p>
-                    <p>Login: <b>vl.bkmebel@bk.ru</b></p>
-                    <p>Password: <b>test_account</b></p>
-                    <p>or</p>
                     <p>Login: <b>free@samuraijs.com</b></p>
                     <p>Password: <b>free</b></p>
                 </div>
